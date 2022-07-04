@@ -5,6 +5,7 @@ module.exports = {
     "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
     quotes: ["error", "double"],
     "object-curly-newline": "off",
+    "react/require-default-props": "warn",
   },
   ignorePatterns: ["coverage"],
 };
