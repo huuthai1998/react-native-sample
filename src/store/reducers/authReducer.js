@@ -5,41 +5,24 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     counter: 0,
-    user: {},
+    token: {},
   },
   reducers: {
-    signIn: async () => {
-      const { data } = await axios.post("/login", {
-        username: "test2",
-        password: "any",
-      });
-      console.log(data);
-    },
-    reset: (state) => {
-      state.counter = 0;
-    },
-    increaseByAmount: (state, { payload }) => {
-      state.counter += parseInt(payload.amount, 10);
-    },
-    decreaseByAmount: (state, { payload }) => {
-      state.counter -= parseInt(payload.amount, 10);
-    },
-    increment: (state) => {
-      state.counter += 1;
-    },
-    decrement: (state) => {
-      state.counter -= 1;
+    signIn: async (state, { payload }) => {
+      try {
+        const { data } = await axios.post("/login", {
+          username: payload.username,
+          password: payload.password,
+        });
+        console.log(data);
+        state.token = payload.token;
+      } catch (err) {
+        console.log(err.message);
+      }
     },
   },
 });
 
-export const {
-  reset,
-  increment,
-  decrement,
-  increaseByAmount,
-  decreaseByAmount,
-  signIn,
-} = authSlice.actions;
+export const { signIn } = authSlice.actions;
 
 export const { reducer: authReducer } = authSlice;

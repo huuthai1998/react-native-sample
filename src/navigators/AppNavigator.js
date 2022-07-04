@@ -16,14 +16,14 @@ function AppNavigator() {
     // <NavigationContainer>
     <Stack.Navigator>
       <Stack.Screen
-        name={AppScreens.HOME_SCREEN}
-        component={HomeScreen}
+        name={AppScreens.LOGIN_SCREEN}
+        component={LoginScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={AppScreens.LOGIN_SCREEN}
-        component={LoginScreen}
-        options={{ headerShown: true }}
+        name={AppScreens.HOME_SCREEN}
+        component={HomeScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

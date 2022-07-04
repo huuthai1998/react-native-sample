@@ -10,6 +10,7 @@ module.exports = {
       "error",
       { props: true, ignorePropertyModificationsFor: ["state"] },
     ],
+    "react/require-default-props": "warn",
   },
   ignorePatterns: ["coverage"],
 };
