@@ -5,9 +5,9 @@
  * @format
  */
 
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import AppNavigator from './navigators/AppNavigator';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import AppNavigator from "./navigators/AppNavigator";
 
 function App() {
   return (
