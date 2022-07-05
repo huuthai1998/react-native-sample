@@ -1,4 +1,5 @@
-import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
 import {
   // Alert,
   KeyboardAvoidingView,
@@ -11,6 +12,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import AppScreens from "../constant/constant";
+import { signIn } from "../store/reducers/authReducer";
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -82,8 +86,23 @@ const styles = StyleSheet.create({
 });
 
 function LoginScreen() {
+  const navigation = useNavigation();
+
+  const [username, setusername] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const onChangeHandler = (key) => (value) => {
+    if (key === "username") setusername(value);
+    if (key === "password") setPassword(value);
+  };
+
   const handleLogin = () => {
-    //
+    try {
+      dispatch(signIn({ username, password }));
+      navigation.navigate(AppScreens.HOME_SCREEN);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -98,16 +117,16 @@ function LoginScreen() {
 
         <Pressable>
           <View style={styles.form}>
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>Username</Text>
 
             <TextInput
               autoCapitalize="none"
-              autoCompleteType="email"
+              autoCompleteType="username"
               autoCorrect={false}
-              keyboardType="email-address"
               returnKeyType="next"
               style={styles.textInput}
               textContentType="username"
+              onChangeText={onChangeHandler("username")}
             />
           </View>
         </Pressable>
@@ -124,6 +143,7 @@ function LoginScreen() {
               secureTextEntry
               style={styles.textInput}
               textContentType="password"
+              onChangeText={onChangeHandler("password")}
             />
           </View>
         </Pressable>
