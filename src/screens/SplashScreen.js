@@ -1,8 +1,8 @@
-import { StackActions, useNavigation } from "@react-navigation/native";
-import React, { useEffect } from "react";
+// import { StackActions, useNavigation } from "@react-navigation/native";
+import React from "react";
 import { Image, View, StyleSheet } from "react-native";
 import Images from "../assets/index";
-import AppScreens from "../constant/constant";
+// import AppScreens from "../constant/constant";
 
 const styles = StyleSheet.create({
   container: {
@@ -15,12 +15,8 @@ const styles = StyleSheet.create({
 });
 
 function Splash() {
-  const { dispatch } = useNavigation();
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(StackActions.replace(AppScreens.LOGIN_SCREEN));
-    }, 1000);
-  }, []);
+  // const { dispatch } = useNavigation();
+
   return (
     <View style={styles.container}>
       <Image style={styles.img} source={Images.splash} />

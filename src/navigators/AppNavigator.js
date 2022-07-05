@@ -8,10 +8,15 @@ import LoginScreen from "../screens/LoginScreen";
 import WalletScreen from "../screens/WalletScreen";
 import Splash from "../screens/SplashScreen";
 import NavBar from "../components/Navbar";
+import AddTokenScreen from "../screens/AddTokenScreen";
 
 const Stack = createNativeStackNavigator();
 
 axios.defaults.baseURL = "http://18.191.86.243:80";
+
+function NavBarRender() {
+  return <NavBar />;
+}
 
 function AppNavigator() {
   const { token } = useSelector((state) => state.auth);
@@ -40,12 +45,18 @@ function AppNavigator() {
         component={HomeScreen}
         options={{
           headerShown: true,
-          headerRight: <NavBar title="Home Page" />,
+          title: "HOME PAGE",
+          headerRight: NavBarRender,
         }}
       />
       <Stack.Screen
         name={AppScreens.WALLET_SCREEN}
         component={WalletScreen}
+        options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name={AppScreens.ADD_TOKEN_SCREEN}
+        component={AddTokenScreen}
         options={{ headerShown: true }}
       />
     </Stack.Navigator>

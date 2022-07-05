@@ -1,8 +1,8 @@
-// import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-// import AppScreens from "../constant/constant";
+import AppScreens from "../constant/constant";
 
 const styles = StyleSheet.create({
   container: {
@@ -13,10 +13,13 @@ const styles = StyleSheet.create({
 });
 
 function NavBar() {
-  //   const { dispatch } = useNavigation();
+  const navigator = useNavigation();
 
+  const navigateToAddToken = () => {
+    navigator.navigate(AppScreens.ADD_TOKEN_SCREEN);
+  };
   return (
-    <TouchableOpacity style={styles.addButton}>
+    <TouchableOpacity style={styles.addButton} onPress={navigateToAddToken}>
       <Text style={{ alignSelf: "flex-end" }}>ADD</Text>
     </TouchableOpacity>
   );
