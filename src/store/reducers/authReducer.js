@@ -20,12 +20,16 @@ const authSlice = createSlice({
     token: {},
     isAuth: false,
     isLoading: false,
+    walletId: "",
   },
   reducers: {
     logOut: (state) => {
       state.token = "";
       state.isAuth = false;
       console.log("Log Out!");
+    },
+    setWalletId: (state, { payload }) => {
+      state.walletId = payload.walletId;
     },
   },
   extraReducers: (builder) => {
@@ -46,6 +50,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logOut } = authSlice.actions;
+export const { logOut, setWalletId } = authSlice.actions;
 
 export const { reducer: authReducer } = authSlice;

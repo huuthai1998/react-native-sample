@@ -1,29 +1,157 @@
-import { StackActions, useNavigation } from "@react-navigation/native";
-import React, { useEffect } from "react";
-import { Image, View, StyleSheet } from "react-native";
-import Images from "../assets/index";
-import AppScreens from "../constant/constant";
+import { Picker, PickerIOS } from "@react-native-picker/picker";
+import axios from "axios";
+import React, { useState } from "react";
+import { Text, View, StyleSheet, Modal } from "react-native";
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { useSelector } from "react-redux";
+import tokenList from "../symbol.json";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: "100%",
+    padding: 10,
+  },
+  button: {
+    marginTop: 20,
+    width: 100,
+    height: 50,
+    padding: 10,
+    backgroundColor: "rgb(93, 95, 222)",
+    color: "white",
+    borderRadius: 10,
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
-  img: { height: "100%", width: "100%", resizeMode: "cover" },
+  text: {
+    color: "white",
+  },
+  textInput: {
+    padding: 5,
+    paddingLeft: 20,
+    height: 50,
+  },
+  textInputWrapper: {
+    marginTop: 20,
+    borderColor: "gray",
+    borderWidth: 1,
+    height: 50,
+    borderRadius: 10,
+  },
+  modalNavbar: {
+    flex: 1,
+    height: 40,
+    justifyContent: "space-between",
+    display: "flex",
+    flexDirection: "row",
+    padding: 20,
+  },
+  modalNavbarText: {
+    fontSize: 19,
+    color: "blue",
+  },
 });
 
+function renderItems() {
+  return tokenList.map((item) => (
+    <PickerIOS.Item label={item.code} value={item.value} key={item.code} />
+  ));
+}
+
 function AddTokenScreen() {
-  const { dispatch } = useNavigation();
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(StackActions.replace(AppScreens.LOGIN_SCREEN));
-    }, 1000);
-  }, []);
+  const { walletId } = useSelector((state) => state.auth);
+  const [showPicker, setShowPicker] = useState(false);
+  const [token, setToken] = useState("");
+
+  const handleAddToken = async () => {
+    try {
+      const symbol = tokenList.find((i) => i.value === token).code;
+      console.log(symbol, token);
+      // Still get 400 code
+      const { data } = await axios.post(`api/v1/wallet/${walletId}/token`, {
+        name: token,
+        symbol,
+      });
+      console.log(data);
+      // alert(`Successfully added ${token} to your wallet!`);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const handleShowPicker = () => {
+    setShowPicker(true);
+  };
+
+  const closePicker = () => {
+    setShowPicker(false);
+  };
+
   return (
     <View style={styles.container}>
-      <Image style={styles.img} source={Images.AddTokenScreen} />
+      <Text>Add new token to your wallet</Text>
+      <TouchableOpacity
+        onPress={handleShowPicker}
+        style={styles.textInputWrapper}
+      >
+        <TextInput
+          pointerEvents="none"
+          value={token}
+          style={styles.textInput}
+          editable={false}
+          selectTextOnFocus={false}
+        />
+      </TouchableOpacity>
+      {showPicker && (
+        <Picker
+          selectedValue={token}
+          onValueChange={(itemValue) => setToken(itemValue)}
+        >
+          {renderItems()}
+        </Picker>
+      )}
+      <View
+        style={{
+          display: "flex",
+          flex: 1,
+          justifyContent: "flex-end",
+          flexDirection: "row",
+        }}
+      >
+        <TouchableOpacity onPress={handleAddToken} style={styles.button}>
+          <Text style={styles.text}>CONFIRM</Text>
+        </TouchableOpacity>
+      </View>
+      <Modal
+        visible={showPicker}
+        style={{ justifyContent: "flex-end", margin: 0 }}
+        onBackdropPress={closePicker}
+      >
+        <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)" }}>
+          <View
+            style={{
+              height: "35%",
+              marginTop: "auto",
+              backgroundColor: "#FFFFFF",
+            }}
+          >
+            <View style={styles.modalNavbar}>
+              <TouchableOpacity onPress={closePicker}>
+                <Text style={styles.modalNavbarText}>Close</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={closePicker}>
+                <Text style={styles.modalNavbarText}>Choose</Text>
+              </TouchableOpacity>
+            </View>
+            <Picker
+              selectedValue={token}
+              onValueChange={(itemValue) => setToken(itemValue)}
+            >
+              {renderItems()}
+            </Picker>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
