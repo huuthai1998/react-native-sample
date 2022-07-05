@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import HomeScreen from "../screens/HomeScreen";
 import AppScreens from "../constant/constant";
 import LoginScreen from "../screens/LoginScreen";
+import WalletScreen from "../screens/WalletScreen";
 import Splash from "../screens/SplashScreen";
 import NavBar from "../components/Navbar";
 
@@ -16,7 +17,7 @@ function AppNavigator() {
   const { token } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    axios.defaults.headers.common.authorization = `bear ${token}`;
+    axios.defaults.headers.common.authorization = `Bearer ${token}`;
   }, [token]);
 
   return (
@@ -41,6 +42,11 @@ function AppNavigator() {
           headerShown: true,
           headerRight: <NavBar title="Home Page" />,
         }}
+      />
+      <Stack.Screen
+        name={AppScreens.WALLET_SCREEN}
+        component={WalletScreen}
+        options={{ headerShown: true }}
       />
     </Stack.Navigator>
   );

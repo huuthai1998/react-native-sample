@@ -53,9 +53,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     lineHeight: 22,
   },
-  forgotPasswordContainer: {
-    alignItems: "flex-end",
-  },
   form: {
     alignItems: "center",
     backgroundColor: "rgb(58, 58, 60)",
@@ -71,12 +68,6 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     lineHeight: 20,
     width: 80,
-  },
-  textButton: {
-    color: "#FFFFFF",
-    fontSize: 15,
-    fontWeight: "400",
-    lineHeight: 20,
   },
   textInput: {
     color: "#FFFFFF",
@@ -97,8 +88,8 @@ function LoginScreen() {
   const handleLogin = async () => {
     try {
       dispatch(signIn(userInfo));
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
 
