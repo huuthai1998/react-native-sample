@@ -46,13 +46,15 @@ function AppNavigator() {
         options={{
           headerShown: true,
           title: "HOME PAGE",
-          headerRight: NavBarRender,
         }}
       />
       <Stack.Screen
         name={AppScreens.WALLET_SCREEN}
         component={WalletScreen}
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true,
+          headerRight: NavBarRender,
+        }}
       />
       <Stack.Screen
         name={AppScreens.ADD_TOKEN_SCREEN}

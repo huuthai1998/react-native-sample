@@ -25,6 +25,7 @@ const authSlice = createSlice({
     logOut: (state) => {
       state.token = "";
       state.isAuth = false;
+      console.log("Log Out!");
     },
   },
   extraReducers: (builder) => {
@@ -33,7 +34,7 @@ const authSlice = createSlice({
     });
 
     builder.addCase(signIn.fulfilled, (state, action) => {
-      console.log("Log In successfull!!");
+      console.log("Log In!");
       state.isAuth = true;
       state.token = action.payload.token;
     });
