@@ -19,7 +19,6 @@ export const signIn = createAsyncThunk(
   },
 );
 
-// prettier-ignore
 const authSlice = createSlice({
   name: "auth",
   initialState: {
