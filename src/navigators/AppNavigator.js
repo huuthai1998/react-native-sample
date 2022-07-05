@@ -4,6 +4,7 @@ import axios from "axios";
 import HomeScreen from "../screens/HomeScreen";
 import AppScreens from "../constant/constant";
 import LoginScreen from "../screens/LoginScreen";
+import Splash from "../screens/SplashScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,11 @@ function AppNavigator() {
   return (
     // <NavigationContainer>
     <Stack.Navigator>
+      <Stack.Screen
+        name={AppScreens.SPLASH_SCREEN}
+        component={Splash}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name={AppScreens.LOGIN_SCREEN}
         component={LoginScreen}

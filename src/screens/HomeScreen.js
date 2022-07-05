@@ -1,10 +1,10 @@
-// import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 
 import { SafeAreaView, StyleSheet, Text } from "react-native";
-// import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-// import AppScreens from "../constant/constant";
+import AppScreens from "../constant/constant";
 
 const styles = StyleSheet.create({
   container: {
@@ -15,22 +15,22 @@ const styles = StyleSheet.create({
 });
 
 function HomeScreen() {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
 
-  // const navigateToLogin = () => {
-  //   navigation.navigate(AppScreens.LOGIN_SCREEN);
-  // };
+  const navigateToLogin = () => {
+    navigation.navigate(AppScreens.LOGIN_SCREEN);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <Text>HOME PAGE</Text>
-      {/* <TouchableOpacity
+      <TouchableOpacity
         onPress={navigateToLogin}
         title="Learn More"
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
       >
         <Text>go to log in</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
