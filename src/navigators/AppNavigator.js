@@ -45,7 +45,11 @@ function AppNavigator() {
         component={HomeScreen}
         options={{
           headerShown: true,
-          title: "HOME PAGE",
+          title: "Home Page",
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "#1B1D24",
+          },
         }}
       />
       <Stack.Screen
@@ -55,12 +59,23 @@ function AppNavigator() {
           headerShown: true,
           headerRight: NavBarRender,
           title: "My Wallet",
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "#1B1D24",
+          },
         }}
       />
       <Stack.Screen
         name={AppScreens.ADD_TOKEN_SCREEN}
         component={AddTokenScreen}
-        options={{ headerShown: true, title: "Add New Token" }}
+        options={{
+          headerShown: true,
+          title: "Add New Token",
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "#1B1D24",
+          },
+        }}
       />
     </Stack.Navigator>
   );

@@ -9,7 +9,16 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
   },
-  addButton: {},
+  addButton: {
+    backgroundColor: "#747480",
+    borderRadius: 12,
+  },
+  text: {
+    color: "white",
+    alignSelf: "flex-end",
+    fontWeight: "600",
+    padding: 5,
+  },
 });
 
 function NavBar() {
@@ -20,7 +29,7 @@ function NavBar() {
   };
   return (
     <TouchableOpacity style={styles.addButton} onPress={navigateToAddToken}>
-      <Text style={{ alignSelf: "flex-end" }}>ADD</Text>
+      <Text style={styles.text}>ADD</Text>
     </TouchableOpacity>
   );
 }

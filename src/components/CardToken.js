@@ -1,62 +1,56 @@
 import React from "react";
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  // TextInput,
-  // TouchableOpacity,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, Text, Image, View } from "react-native";
 import PropTypes from "prop-types";
+import Images from "../assets/index";
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "#1E2127",
+    borderColor: "#30333A",
+    borderWidth: 1,
+    borderRadius: 7,
+    flexDirection: "row",
     margin: 5,
     padding: 10,
   },
+  content: {
+    flexDirection: "column",
+    marginLeft: 10,
+  },
   title: {
-    color: "#000000",
+    color: "#FFFFFF",
     fontSize: 20,
     fontWeight: "500",
     marginBottom: 5,
   },
+  name: {
+    color: "#727A82",
+  },
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 50 / 2,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "white",
+  },
 });
 
 function CardToken({ id, symbol, name }) {
-  // const navigation = useNavigation();
-
-  // const [userInfo, setUserInfo] = useState({ username: "", password: "" });
-
-  // const dispatch = useDispatch();
-  // const onChangeHandler = (key) => (value) => {
-  //   setUserInfo({ ...userInfo, [key]: value });
-  // };
-
-  // const handleLogin = () => {
-  //   try {
-  //     console.log(userInfo);
-  //     dispatch(signIn(userInfo));
-  //     console.log(userInfo);
-  //     navigation.navigate(AppScreens.HOME_SCREEN);
-  //   } catch (err) {
-  //     console.log(userInfo);
-  //     console.log(err);
-  //   }
-  // };
-
   return (
     <Pressable>
       <View style={styles.container}>
-        <Text style={styles.title}>
-          {id}
-          :
-          {symbol}
-        </Text>
-        <Text>{name}</Text>
+        <Image
+          source={{
+            uri: Images.crypto,
+          }}
+          style={styles.image}
+          title={id}
+        />
+        <View style={styles.content}>
+          <Text style={styles.title}>{symbol}</Text>
+          <Text style={styles.name}>{name}</Text>
+        </View>
       </View>
     </Pressable>
   );

@@ -16,7 +16,7 @@ import { setWalletId } from "../store/reducers/authReducer";
 
 const styles = StyleSheet.create({
   safeAreaView: {
-    // backgroundColor: "#000000",
+    backgroundColor: "#1B1D24",
     flex: 1,
   },
   title: {
@@ -30,13 +30,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 16,
     paddingVertical: 32,
-  },
-  button: {
-    alignItems: "center",
-    backgroundColor: "rgb(93, 95, 222)",
-    borderRadius: 8,
-    height: 48,
-    justifyContent: "center",
   },
   errorTitle: {
     fontSize: 30,
@@ -83,7 +76,7 @@ function WalletScreen() {
       >
         {!errorMessage ? (
           <>
-            <Text style={styles.title}>Your Wallet</Text>
+            {/* <Text style={styles.title}>Your Wallet</Text> */}
             {tokens && tokens.length > 0 ? (
               <ScrollView>
                 {tokens.map((token) => (

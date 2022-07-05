@@ -17,7 +17,7 @@ import { clearLoginErrorMessage, signIn } from "../store/reducers/authReducer";
 
 const styles = StyleSheet.create({
   safeAreaView: {
-    backgroundColor: "#000000",
+    backgroundColor: "#1B1D24",
     flex: 1,
   },
   title: {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    backgroundColor: "rgb(93, 95, 222)",
+    backgroundColor: "#029973",
     borderRadius: 8,
     height: 48,
     justifyContent: "center",
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   form: {
     alignItems: "center",
-    backgroundColor: "rgb(58, 58, 60)",
+    backgroundColor: "#3b3b3d",
     borderRadius: 8,
     flexDirection: "row",
     height: 48,

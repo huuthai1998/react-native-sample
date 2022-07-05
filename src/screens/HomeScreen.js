@@ -10,8 +10,32 @@ import { logOut } from "../store/reducers/authReducer";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#1B1D24",
     alignItems: "center",
+    // flexDirection: "row",
+  },
+  toWallet: {
+    width: 150,
+    backgroundColor: "#00A478",
+    borderRadius: 6,
+    paddingTop: 10,
+    paddingBottom: 10,
+    alignItems: "center",
+    marginVertical: 20,
+  },
+  logout: {
+    width: 150,
+    borderColor: "#3CC8C8",
+    borderRadius: 6,
+    paddingTop: 10,
+    paddingBottom: 10,
+    alignItems: "center",
+    borderWidth: 1,
+  },
+  text: {
+    fontWeight: "800",
+    color: "white",
+    fontSize: 15,
   },
 });
 
@@ -34,20 +58,19 @@ function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>HOME PAGE</Text>
       <TouchableOpacity
         onPress={navigateToWallet}
         color="#841584"
-        accessibilityLabel="Learn more about this purple button"
+        style={styles.toWallet}
       >
-        <Text>Go to Your Wallet</Text>
+        <Text style={styles.text}>Your Wallet</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={handleLogOut}
         color="#841584"
-        accessibilityLabel="Learn more about this purple button"
+        style={styles.logout}
       >
-        <Text>Log Out</Text>
+        <Text style={styles.text}>Log Out</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

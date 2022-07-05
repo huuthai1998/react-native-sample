@@ -10,17 +10,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+    backgroundColor: "#1B1D24",
   },
   button: {
     marginTop: 20,
-    width: 100,
-    height: 50,
     padding: 10,
-    backgroundColor: "rgb(93, 95, 222)",
+    backgroundColor: "#029973",
     color: "white",
-    borderRadius: 10,
+    borderRadius: 8,
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
   },
   text: {
@@ -30,13 +28,13 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingLeft: 20,
     height: 50,
+    color: "white",
   },
   textInputWrapper: {
     marginTop: 20,
-    borderColor: "gray",
-    borderWidth: 1,
+    backgroundColor: "rgba(116, 116, 128, 0.4)",
     height: 50,
-    borderRadius: 10,
+    borderRadius: 8,
   },
   modalNavbar: {
     flex: 1,
@@ -89,7 +87,7 @@ function AddTokenScreen() {
 
   return (
     <View style={styles.container}>
-      <Text>Add new token to your wallet</Text>
+      <Text style={styles.text}>Add new token to your wallet</Text>
       <TouchableOpacity
         onPress={handleShowPicker}
         style={styles.textInputWrapper}
