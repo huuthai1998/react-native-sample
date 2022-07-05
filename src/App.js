@@ -5,15 +5,26 @@
  * @format
  */
 
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import AppNavigator from './navigators/AppNavigator';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { Provider } from "react-redux";
+
+import { PersistGate } from "redux-persist/integration/react";
+import persistStore from "redux-persist/es/persistStore";
+import store from "./store";
+import AppNavigator from "./navigators/AppNavigator";
+
+const persistor = persistStore(store);
 
 function App() {
   return (
-    <NavigationContainer>
-      <AppNavigator />
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <AppNavigator />
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }
 

@@ -1,5 +1,5 @@
 const translation = {
-  ok: 'ok',
+  ok: "ok",
 };
 
 export default translation;
