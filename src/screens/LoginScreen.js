@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AppScreens from "../constant/constant";
 import { signIn } from "../store/reducers/authReducer";
 
@@ -53,9 +53,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     lineHeight: 22,
   },
-  forgotPasswordContainer: {
-    alignItems: "flex-end",
-  },
   form: {
     alignItems: "center",
     backgroundColor: "rgb(58, 58, 60)",
@@ -72,12 +69,6 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     width: 80,
   },
-  textButton: {
-    color: "#FFFFFF",
-    fontSize: 15,
-    fontWeight: "400",
-    lineHeight: 20,
-  },
   textInput: {
     color: "#FFFFFF",
     flex: 1,
@@ -86,7 +77,7 @@ const styles = StyleSheet.create({
 
 function LoginScreen() {
   const navigation = useNavigation();
-
+  const { isAuth } = useSelector((state) => state.auth);
   const [userInfo, setUserInfo] = useState({ username: "", password: "" });
 
   const dispatch = useDispatch();
@@ -94,17 +85,17 @@ function LoginScreen() {
     setUserInfo({ ...userInfo, [key]: value });
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     try {
-      console.log(userInfo);
       dispatch(signIn(userInfo));
-      console.log(userInfo);
-      navigation.navigate(AppScreens.HOME_SCREEN);
-    } catch (err) {
-      console.log(userInfo);
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (isAuth) navigation.navigate(AppScreens.HOME_SCREEN);
+  }, [isAuth]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>

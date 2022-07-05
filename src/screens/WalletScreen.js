@@ -1,14 +1,14 @@
 // import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-  KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   StyleSheet,
   ScrollView,
   Text,
+  View,
 } from "react-native";
-// import axios from "axios";
+import axios from "axios";
 // import { useSelector } from "react-redux";
 import CardToken from "../components/CardToken";
 
@@ -23,13 +23,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 10,
   },
-  subtitle: {
-    color: "rgba(235, 235, 245, 0.6)",
-    fontSize: 17,
-    fontWeight: "400",
-    lineHeight: 22,
-    marginBottom: 25,
-  },
   content: {
     flex: 1,
     justifyContent: "center",
@@ -43,98 +36,73 @@ const styles = StyleSheet.create({
     height: 48,
     justifyContent: "center",
   },
-  buttonTitle: {
-    color: "#FFFFFF",
-    fontSize: 17,
-    fontWeight: "600",
-    lineHeight: 22,
+  errorTitle: {
+    fontSize: 30,
+    marginBottom: 10,
   },
-  forgotPasswordContainer: {
-    alignItems: "flex-end",
+  errorSubTitle: {
+    fontSize: 20,
+    marginBottom: 10,
+    fontWeight: "700",
   },
-  form: {
-    alignItems: "center",
-    backgroundColor: "rgb(58, 58, 60)",
-    borderRadius: 8,
-    flexDirection: "row",
-    height: 48,
-    paddingHorizontal: 16,
-    marginBottom: 20,
-  },
-  label: {
-    color: "rgba(235, 235, 245, 0.6)",
-    fontSize: 15,
-    fontWeight: "400",
-    lineHeight: 20,
-    width: 80,
-  },
-  textButton: {
-    color: "#FFFFFF",
-    fontSize: 15,
-    fontWeight: "400",
-    lineHeight: 20,
-  },
-  textInput: {
-    color: "#FFFFFF",
-    flex: 1,
-  },
+  // errorMessage: {
+
+  // },
 });
 
 function LoginScreen() {
   // const navigation = useNavigation();
 
-  // const [userInfo, setUserInfo] = useState({ username: "", password: "" });
+  const [tokens, setTokens] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // const dispatch = useDispatch();
-  // const onChangeHandler = (key) => (value) => {
-  //   setUserInfo({ ...userInfo, [key]: value });
-  // };
+  const getWalletData = async () => {
+    try {
+      const { data } = await axios.get("/api/v1/wallet", {
+        headers: { Accept: "application/json" },
+      });
+      setTokens(data.wallet.tokens);
+    } catch (error) {
+      setErrorMessage(`${error}`);
+    }
+  };
 
-  // const handleLogin = () => {
-  //   try {
-  //     console.log(userInfo);
-  //     dispatch(signIn(userInfo));
-  //     console.log(userInfo);
-  //     navigation.navigate(AppScreens.HOME_SCREEN);
-  //   } catch (err) {
-  //     console.log(userInfo);
-  //     console.log(err);
-  //   }
-  // };
-  // const dt = useSelector((state) => state.auth);
-
-  // const getWalletData = async () => {
-  //   console.log(dt);
-  //   const AuthStr = "Bearer ".concat(dt.token);
-  //   console.log(AuthStr);
-  //   try {
-  //     const data = await axios.get("/api/v1/wallet", {
-  //       headers: {
-  //         Authorization: AuthStr,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getWalletData();
-  // }, []);
+  useEffect(() => {
+    getWalletData();
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <KeyboardAvoidingView
+      <View
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.content}
       >
-        <Text style={styles.title}> Your Wallet </Text>
-        <ScrollView>
-          <CardToken id={1} symbol="BTC" name="Bitcoin" />
-        </ScrollView>
-      </KeyboardAvoidingView>
+        {!errorMessage ? (
+          <>
+            <Text style={styles.title}>Your Wallet</Text>
+            {tokens && tokens.length > 0 ? (
+              <ScrollView>
+                {tokens.map((token) => (
+                  <CardToken
+                    key={token.id}
+                    id={token.id}
+                    symbol={token.symbol}
+                    name={token.name}
+                  />
+                ))}
+              </ScrollView>
+            ) : (
+              <Text>There&apos;s no data available.</Text>
+            )}
+          </>
+        ) : (
+          <>
+            <Text style={styles.errorTitle}>Oops!</Text>
+            <Text style={styles.errorSubTitle}>There&apos;s an error.</Text>
+            <Text>{errorMessage}</Text>
+          </>
+        )}
+      </View>
     </SafeAreaView>
   );
 }
