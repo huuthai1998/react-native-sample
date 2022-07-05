@@ -17,7 +17,7 @@ const authSlice = createSlice({
         console.log(data);
         state.token = payload.token;
       } catch (err) {
-        console.log(err.message);
+        throw (err.message);
       }
     },
   },

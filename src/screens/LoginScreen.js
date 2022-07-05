@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
-  // Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -88,19 +87,21 @@ const styles = StyleSheet.create({
 function LoginScreen() {
   const navigation = useNavigation();
 
-  const [username, setusername] = useState("");
-  const [password, setPassword] = useState("");
+  const [userInfo, setUserInfo] = useState({ username: "", password: "" });
+
   const dispatch = useDispatch();
   const onChangeHandler = (key) => (value) => {
-    if (key === "username") setusername(value);
-    if (key === "password") setPassword(value);
+    setUserInfo({ ...userInfo, [key]: value });
   };
 
   const handleLogin = () => {
     try {
-      dispatch(signIn({ username, password }));
+      console.log(userInfo);
+      dispatch(signIn(userInfo));
+      console.log(userInfo);
       navigation.navigate(AppScreens.HOME_SCREEN);
     } catch (err) {
+      console.log(userInfo);
       console.log(err);
     }
   };
