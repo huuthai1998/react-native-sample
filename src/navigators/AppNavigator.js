@@ -4,6 +4,7 @@ import axios from "axios";
 import HomeScreen from "../screens/HomeScreen";
 import AppScreens from "../constant/constant";
 import LoginScreen from "../screens/LoginScreen";
+import WalletScreen from "../screens/WalletScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,11 @@ function AppNavigator() {
         name={AppScreens.HOME_SCREEN}
         component={HomeScreen}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={AppScreens.WALLET_SCREEN}
+        component={WalletScreen}
+        options={{ headerShown: true }}
       />
     </Stack.Navigator>
   );
