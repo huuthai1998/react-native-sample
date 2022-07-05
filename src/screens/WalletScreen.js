@@ -10,7 +10,9 @@ import {
 } from "react-native";
 import axios from "axios";
 // import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import CardToken from "../components/CardToken";
+import { setWalletId } from "../store/reducers/authReducer";
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -50,8 +52,9 @@ const styles = StyleSheet.create({
   // },
 });
 
-function LoginScreen() {
+function WalletScreen() {
   // const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [tokens, setTokens] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
@@ -62,6 +65,7 @@ function LoginScreen() {
         headers: { Accept: "application/json" },
       });
       setTokens(data.wallet.tokens);
+      dispatch(setWalletId({ walletId: data.wallet.ID }));
     } catch (error) {
       setErrorMessage(`${error}`);
     }
@@ -107,4 +111,4 @@ function LoginScreen() {
   );
 }
 
-export default LoginScreen;
+export default WalletScreen;

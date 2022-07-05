@@ -23,6 +23,8 @@ const authSlice = createSlice({
     token: "",
     isAuth: false,
     loginErrorMessage: "",
+    isLoading: false,
+    walletId: "",
   },
   reducers: {
     logOut: (state) => {
@@ -33,6 +35,9 @@ const authSlice = createSlice({
     },
     clearLoginErrorMessage: (state) => {
       state.loginErrorMessage = "";
+    },
+    setWalletId: (state, { payload }) => {
+      state.walletId = payload.walletId;
     },
   },
   extraReducers: (builder) => {
@@ -55,6 +60,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logOut, clearLoginErrorMessage } = authSlice.actions;
+export const { logOut, clearLoginErrorMessage, setWalletId } = authSlice.actions;
 
 export const { reducer: authReducer } = authSlice;

@@ -54,12 +54,13 @@ function AppNavigator() {
         options={{
           headerShown: true,
           headerRight: NavBarRender,
+          title: "My Wallet",
         }}
       />
       <Stack.Screen
         name={AppScreens.ADD_TOKEN_SCREEN}
         component={AddTokenScreen}
-        options={{ headerShown: true }}
+        options={{ headerShown: true, title: "Add New Token" }}
       />
     </Stack.Navigator>
   );
