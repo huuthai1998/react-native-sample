@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AppScreens from "../constant/constant";
-import { signIn } from "../store/reducers/authReducer";
+import { clearLoginErrorMessage, signIn } from "../store/reducers/authReducer";
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -73,12 +73,18 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     flex: 1,
   },
+  error: {
+    color: "red",
+    fontWeight: "300",
+    marginBottom: 10,
+  },
 });
 
 function LoginScreen() {
   const navigation = useNavigation();
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth, loginErrorMessage } = useSelector((state) => state.auth);
   const [userInfo, setUserInfo] = useState({ username: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState("");
 
   const dispatch = useDispatch();
   const onChangeHandler = (key) => (value) => {
@@ -86,12 +92,17 @@ function LoginScreen() {
   };
 
   const handleLogin = async () => {
-    try {
-      dispatch(signIn(userInfo));
-    } catch (error) {
-      console.log(error);
-    }
+    // this call may change loginErrorMessage state
+    dispatch(signIn(userInfo));
   };
+
+  useEffect(() => {
+    setErrorMessage(loginErrorMessage);
+  }, [loginErrorMessage]);
+
+  useEffect(() => {
+    dispatch(clearLoginErrorMessage());
+  }, []);
 
   useEffect(() => {
     if (isAuth) navigation.navigate(AppScreens.HOME_SCREEN);
@@ -139,6 +150,10 @@ function LoginScreen() {
             />
           </View>
         </Pressable>
+
+        {errorMessage && errorMessage.length > 0 ? (
+          <Text style={styles.error}>{errorMessage}</Text>
+        ) : null}
 
         <TouchableOpacity onPress={handleLogin}>
           <View style={styles.button}>
