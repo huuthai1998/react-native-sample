@@ -54,26 +54,27 @@ const styles = StyleSheet.create({
 
 function renderItems() {
   return tokenList.map((item) => (
-    <PickerIOS.Item label={item.code} value={item.value} key={item.code} />
+    <PickerIOS.Item label={item.code} value={item.code} key={item.code} />
   ));
 }
 
-function AddTokenScreen() {
+function AddPositionScreen() {
   const { walletId } = useSelector((state) => state.auth);
   const [showPicker, setShowPicker] = useState(false);
-  const [token, setToken] = useState("");
+  const [amount, setAmount] = useState(0);
   const [symbol, setSymbol] = useState("");
 
+  const onChangeHandler = () => (value) => {
+    setAmount(parseInt(value, 10));
+  };
   const handleChoose = () => {
     setShowPicker(false);
-    setSymbol(tokenList.find((i) => i.value === token).code);
   };
 
   const handleAddToken = async () => {
     try {
-      await axios.post(`/api/v1/wallet/${walletId}/token`, {
-        name: token,
-        symbol,
+      await axios.post(`/api/v1/wallet/${walletId}/${symbol}/position`, {
+        amount,
       });
       // alert(`Successfully added ${token} to your wallet!`);
     } catch (err) {
@@ -104,16 +105,13 @@ function AddTokenScreen() {
           selectTextOnFocus={false}
         />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.textInputWrapper} disabled>
+      <View style={styles.textInputWrapper}>
         <TextInput
-          pointerEvents="none"
-          value={token}
+          keyboardType="number-pad"
+          onChangeText={onChangeHandler("amount")}
           style={styles.textInput}
-          editable={false}
-          selectTextOnFocus={false}
         />
-      </TouchableOpacity>
-
+      </View>
       <View
         style={{
           display: "flex",
@@ -153,8 +151,8 @@ function AddTokenScreen() {
               </TouchableOpacity>
             </View>
             <Picker
-              selectedValue={token}
-              onValueChange={(itemValue) => setToken(itemValue)}
+              selectedValue={symbol}
+              onValueChange={(itemValue) => setSymbol(itemValue)}
             >
               {renderItems()}
             </Picker>
@@ -165,4 +163,4 @@ function AddTokenScreen() {
   );
 }
 
-export default AddTokenScreen;
+export default AddPositionScreen;
