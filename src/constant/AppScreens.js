@@ -1,4 +1,4 @@
-const AppScreens = {
+export default {
   SPLASH_SCREEN: "SPLASH_SCREEN",
   HOME_SCREEN: "HOME_SCREEN",
   LOGIN_SCREEN: "LOGIN_SCREEN",
@@ -6,5 +6,3 @@ const AppScreens = {
   ADD_TOKEN_SCREEN: "ADD_TOKEN_SCREEN",
   ADD_POSITION_SCREEN: "ADD_POSITION_SCREEN",
 };
-
-export default AppScreens;

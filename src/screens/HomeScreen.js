@@ -4,19 +4,20 @@ import React from "react";
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useDispatch } from "react-redux";
 
-import AppScreens from "../constant/constant";
+import AppScreens from "../constant/AppScreens";
+import Colors from "../constant/Colors";
 import { logOut } from "../store/reducers/authReducer";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1B1D24",
+    backgroundColor: Colors.background,
     alignItems: "center",
     // flexDirection: "row",
   },
   toWallet: {
     width: 150,
-    backgroundColor: "#00A478",
+    backgroundColor: Colors.button,
     borderRadius: 6,
     paddingTop: 10,
     paddingBottom: 10,
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
   },
   logout: {
     width: 150,
-    borderColor: "#3CC8C8",
+    borderColor: Colors.buttonBorder,
     borderRadius: 6,
     paddingTop: 10,
     paddingBottom: 10,
