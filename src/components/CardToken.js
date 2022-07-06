@@ -36,15 +36,11 @@ const styles = StyleSheet.create({
   },
 });
 
-function CardToken({ id, symbol, name, src }) {
+function CardToken({ id, symbol, name, src, onPress }) {
   return (
-    <Pressable>
+    <Pressable onPress={onPress}>
       <View style={styles.container}>
-        <Image
-          source={src}
-          style={styles.image}
-          title={id}
-        />
+        <Image source={src} style={styles.image} title={id} />
         <View style={styles.content}>
           <Text style={styles.title}>{symbol}</Text>
           <Text style={styles.name}>{name}</Text>
@@ -59,6 +55,7 @@ CardToken.propTypes = {
   symbol: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   src: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
 export default CardToken;

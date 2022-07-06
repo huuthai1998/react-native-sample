@@ -11,9 +11,11 @@ import {
 import axios from "axios";
 // import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import CardToken from "../components/CardToken";
 import { setWalletId } from "../store/reducers/authReducer";
+import { setSelectedToken } from "../store/reducers/tokenReducer";
+import AppScreens from "../constant/AppScreens";
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -44,12 +46,17 @@ const styles = StyleSheet.create({
 });
 
 function WalletScreen() {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
   const [tokens, setTokens] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const selectTokenHandler = (item) => () => {
+    dispatch(setSelectedToken({ selectedToken: item }));
+    navigation.navigate(AppScreens.TOKEN_DETAIL_SCREEN);
+  };
 
   const getWalletData = async () => {
     try {
@@ -80,6 +87,7 @@ function WalletScreen() {
               <ScrollView>
                 {tokens.map((token) => (
                   <CardToken
+                    onPress={selectTokenHandler(token)}
                     key={token.id}
                     id={token.id}
                     symbol={token.symbol}

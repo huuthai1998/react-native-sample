@@ -10,6 +10,7 @@ import Splash from "../screens/SplashScreen";
 import NavBar from "../components/Navbar";
 import AddTokenScreen from "../screens/AddTokenScreen";
 import AddPositionScreen from "../screens/AddPositionScreen";
+import TokenDetailScreen from "../screens/TokenDetailScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,18 +31,6 @@ function AppNavigator() {
   return (
     // <NavigationContainer>
     <Stack.Navigator>
-      <Stack.Screen
-        name={AppScreens.ADD_POSITION_SCREEN}
-        component={AddPositionScreen}
-        options={{
-          headerShown: true,
-          title: "Add New Position",
-          headerTintColor: "white",
-          headerStyle: {
-            backgroundColor: "#1B1D24",
-          },
-        }}
-      />
       <Stack.Screen
         name={AppScreens.SPLASH_SCREEN}
         component={Splash}
@@ -85,6 +74,30 @@ function AppNavigator() {
         options={{
           headerShown: true,
           title: "Add New Token",
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "#1B1D24",
+          },
+        }}
+      />
+      <Stack.Screen
+        name={AppScreens.ADD_POSITION_SCREEN}
+        component={AddPositionScreen}
+        options={{
+          headerShown: true,
+          title: "Add New Position",
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "#1B1D24",
+          },
+        }}
+      />
+      <Stack.Screen
+        name={AppScreens.TOKEN_DETAIL_SCREEN}
+        component={TokenDetailScreen}
+        options={{
+          headerShown: true,
+          title: "Token Detail",
           headerTintColor: "white",
           headerStyle: {
             backgroundColor: "#1B1D24",

@@ -74,7 +74,7 @@ function AddPositionScreen() {
   const [symbol, setSymbol] = useState("");
 
   const onChangeHandler = () => (value) => {
-    setAmount(parseInt(value, 10));
+    setAmount(parseFloat(value, 10));
   };
   const handleChoose = () => {
     setShowPicker(false);
