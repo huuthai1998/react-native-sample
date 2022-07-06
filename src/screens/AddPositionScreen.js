@@ -2,10 +2,12 @@ import { Picker, PickerIOS } from "@react-native-picker/picker";
 import axios from "axios";
 import React, { useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
+
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import Modal from "react-native-modal";
+import Colors from "../constant/Colors";
 import tokenList from "../symbol.json";
 
 const styles = StyleSheet.create({
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   textInputWrapper: {
-    marginTop: 20,
+    marginTop: 10,
     backgroundColor: "rgba(116, 116, 128, 0.4)",
     height: 50,
     borderRadius: 8,
@@ -49,6 +51,13 @@ const styles = StyleSheet.create({
   modalNavbarText: {
     fontSize: 19,
     color: "blue",
+  },
+  label: {
+    color: Colors.label,
+    fontSize: 15,
+    fontWeight: "400",
+    lineHeight: 20,
+    marginTop: 20,
   },
 });
 
@@ -93,6 +102,7 @@ function AddPositionScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.text}>Add new token to your wallet</Text>
+      <Text style={styles.label}>Token symbol</Text>
       <TouchableOpacity
         onPress={handleShowPicker}
         style={styles.textInputWrapper}
@@ -105,6 +115,7 @@ function AddPositionScreen() {
           selectTextOnFocus={false}
         />
       </TouchableOpacity>
+      <Text style={styles.label}>Amount</Text>
       <View style={styles.textInputWrapper}>
         <TextInput
           keyboardType="number-pad"
