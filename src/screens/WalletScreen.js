@@ -40,9 +40,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: "700",
   },
-  // errorMessage: {
-
-  // },
 });
 
 function WalletScreen() {
@@ -85,6 +82,7 @@ function WalletScreen() {
                     id={token.id}
                     symbol={token.symbol}
                     name={token.name}
+                    src=""
                   />
                 ))}
               </ScrollView>

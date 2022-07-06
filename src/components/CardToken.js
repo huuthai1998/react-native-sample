@@ -1,7 +1,6 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, Image, View } from "react-native";
 import PropTypes from "prop-types";
-import Images from "../assets/index";
 
 const styles = StyleSheet.create({
   container: {
@@ -36,14 +35,12 @@ const styles = StyleSheet.create({
   },
 });
 
-function CardToken({ id, symbol, name }) {
+function CardToken({ id, symbol, name, src }) {
   return (
     <Pressable>
       <View style={styles.container}>
         <Image
-          source={{
-            uri: Images.crypto,
-          }}
+          source={src}
           style={styles.image}
           title={id}
         />
@@ -60,6 +57,7 @@ CardToken.propTypes = {
   id: PropTypes.number.isRequired,
   symbol: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  src: PropTypes.string.isRequired,
 };
 
 export default CardToken;
