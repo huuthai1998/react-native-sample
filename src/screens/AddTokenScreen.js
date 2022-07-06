@@ -7,6 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import Modal from "react-native-modal";
 import tokenList from "../symbol.json";
+import Colors from "../constant/Colors";
 
 const styles = StyleSheet.create({
   container: {
@@ -26,35 +27,40 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
   },
+  label: {
+    color: Colors.label,
+    fontSize: 15,
+    fontWeight: "400",
+    marginRight: 10,
+    padding: 15,
+  },
   textInput: {
-    padding: 5,
-    paddingLeft: 20,
     height: 50,
     color: "white",
   },
   textInputWrapper: {
     marginTop: 20,
-    backgroundColor: "rgba(116, 116, 128, 0.4)",
+    backgroundColor: Colors.input,
     height: 50,
     borderRadius: 8,
+    flexDirection: "row",
   },
   modalNavbar: {
-    flex: 1,
-    height: 40,
     justifyContent: "space-between",
     display: "flex",
     flexDirection: "row",
-    padding: 20,
+    padding: 10,
   },
   modalNavbarText: {
     fontSize: 19,
-    color: "blue",
+    fontWeight: "500",
+    color: "#16CEB9",
   },
 });
 
 function renderItems() {
   return tokenList.map((item) => (
-    <PickerIOS.Item label={item.code} value={item.value} key={item.code} />
+    <PickerIOS.Item label={item.code} value={item.value} key={item.code} color="white" />
   ));
 }
 
@@ -96,6 +102,7 @@ function AddTokenScreen() {
         onPress={handleShowPicker}
         style={styles.textInputWrapper}
       >
+        <Text style={styles.label}>Code:</Text>
         <TextInput
           pointerEvents="none"
           value={symbol}
@@ -105,6 +112,7 @@ function AddTokenScreen() {
         />
       </TouchableOpacity>
       <TouchableOpacity style={styles.textInputWrapper} disabled>
+        <Text style={styles.label}>Name:</Text>
         <TextInput
           pointerEvents="none"
           value={token}
@@ -141,7 +149,7 @@ function AddTokenScreen() {
             style={{
               height: "35%",
               marginTop: "auto",
-              backgroundColor: "#FFFFFF",
+              backgroundColor: Colors.card,
             }}
           >
             <View style={styles.modalNavbar}>

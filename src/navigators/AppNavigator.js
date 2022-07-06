@@ -31,18 +31,6 @@ function AppNavigator() {
     // <NavigationContainer>
     <Stack.Navigator>
       <Stack.Screen
-        name={AppScreens.ADD_POSITION_SCREEN}
-        component={AddPositionScreen}
-        options={{
-          headerShown: true,
-          title: "Add New Position",
-          headerTintColor: "white",
-          headerStyle: {
-            backgroundColor: "#1B1D24",
-          },
-        }}
-      />
-      <Stack.Screen
         name={AppScreens.SPLASH_SCREEN}
         component={Splash}
         options={{
@@ -85,6 +73,18 @@ function AppNavigator() {
         options={{
           headerShown: true,
           title: "Add New Token",
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "#1B1D24",
+          },
+        }}
+      />
+      <Stack.Screen
+        name={AppScreens.ADD_POSITION_SCREEN}
+        component={AddPositionScreen}
+        options={{
+          headerShown: true,
+          title: "Add New Position",
           headerTintColor: "white",
           headerStyle: {
             backgroundColor: "#1B1D24",

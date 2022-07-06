@@ -1,11 +1,11 @@
 import React from "react";
-import { Pressable, StyleSheet, Text, Image, View } from "react-native";
+import { StyleSheet, Text, Image, View } from "react-native";
 import PropTypes from "prop-types";
 import Colors from "../constant/Colors";
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1E2127",
+    backgroundColor: Colors.card,
     borderColor: "#30333A",
     borderWidth: 1,
     borderRadius: 7,
@@ -38,19 +38,17 @@ const styles = StyleSheet.create({
 
 function CardToken({ id, symbol, name, src }) {
   return (
-    <Pressable>
-      <View style={styles.container}>
-        <Image
-          source={src}
-          style={styles.image}
-          title={id}
-        />
-        <View style={styles.content}>
-          <Text style={styles.title}>{symbol}</Text>
-          <Text style={styles.name}>{name}</Text>
-        </View>
+    <View style={styles.container}>
+      <Image
+        source={src}
+        style={styles.image}
+        title={id}
+      />
+      <View style={styles.content}>
+        <Text style={styles.title}>{symbol}</Text>
+        <Text style={styles.name}>{name}</Text>
       </View>
-    </Pressable>
+    </View>
   );
 }
 
