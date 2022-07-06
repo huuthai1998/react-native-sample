@@ -6,5 +6,5 @@ export default {
   buttonBorder: "#3CC8C8",
   input: "#3b3b3d",
   error: "#e32727",
-
+  card: "#1E2127",
 };
