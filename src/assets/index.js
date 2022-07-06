@@ -1,4 +1,4 @@
 // prettier-ignore
 export default {
-  splash: require("./btc.jpeg"), // eslint-disable-line global-require
+  splash: require("./splash.jpeg"), // eslint-disable-line global-require
 };

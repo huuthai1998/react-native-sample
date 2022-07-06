@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import HomeScreen from "../screens/HomeScreen";
-import AppScreens from "../constant/constant";
+import AppScreens from "../constant/AppScreens";
 import LoginScreen from "../screens/LoginScreen";
 import WalletScreen from "../screens/WalletScreen";
 import Splash from "../screens/SplashScreen";

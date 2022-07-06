@@ -2,7 +2,7 @@ import { StackActions, useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { Image, View, StyleSheet } from "react-native";
 import Images from "../assets/index";
-import AppScreens from "../constant/constant";
+import AppScreens from "../constant/AppScreens";
 
 const styles = StyleSheet.create({
   container: {

@@ -1,6 +1,7 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, Image, View } from "react-native";
 import PropTypes from "prop-types";
+import Colors from "../constant/Colors";
 
 const styles = StyleSheet.create({
   container: {
@@ -17,13 +18,13 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   title: {
-    color: "#FFFFFF",
+    color: "white",
     fontSize: 20,
     fontWeight: "500",
     marginBottom: 5,
   },
   name: {
-    color: "#727A82",
+    color: Colors.subtitle,
   },
   image: {
     width: 50,
