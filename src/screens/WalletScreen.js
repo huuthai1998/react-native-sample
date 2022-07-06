@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 // import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
 import CardToken from "../components/CardToken";
 import { setWalletId } from "../store/reducers/authReducer";
 
@@ -45,6 +46,7 @@ const styles = StyleSheet.create({
 function WalletScreen() {
   // const navigation = useNavigation();
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   const [tokens, setTokens] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
@@ -63,7 +65,7 @@ function WalletScreen() {
 
   useEffect(() => {
     getWalletData();
-  }, []);
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -82,7 +84,7 @@ function WalletScreen() {
                     id={token.id}
                     symbol={token.symbol}
                     name={token.name}
-                    src=""
+                    // src={tokenIcons[token.symbol]}
                   />
                 ))}
               </ScrollView>

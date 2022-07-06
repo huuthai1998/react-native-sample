@@ -1,9 +1,11 @@
 import { Picker, PickerIOS } from "@react-native-picker/picker";
 import axios from "axios";
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Modal } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
+import Modal from "react-native-modal";
 import tokenList from "../symbol.json";
 
 const styles = StyleSheet.create({
@@ -60,17 +62,19 @@ function AddTokenScreen() {
   const { walletId } = useSelector((state) => state.auth);
   const [showPicker, setShowPicker] = useState(false);
   const [token, setToken] = useState("");
+  const [symbol, setSymbol] = useState("");
+
+  const handleChoose = () => {
+    setShowPicker(false);
+    setSymbol(tokenList.find((i) => i.value === token).code);
+  };
 
   const handleAddToken = async () => {
     try {
-      const symbol = tokenList.find((i) => i.value === token).code;
-      console.log(symbol, token);
-      // Still get 400 code
-      const { data } = await axios.post(`api/v1/wallet/${walletId}/token`, {
+      await axios.post(`/api/v1/wallet/${walletId}/token`, {
         name: token,
         symbol,
       });
-      console.log(data);
       // alert(`Successfully added ${token} to your wallet!`);
     } catch (err) {
       console.log(err.message);
@@ -86,12 +90,21 @@ function AddTokenScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.text}>Add new token to your wallet</Text>
       <TouchableOpacity
         onPress={handleShowPicker}
         style={styles.textInputWrapper}
       >
+        <TextInput
+          pointerEvents="none"
+          value={symbol}
+          style={styles.textInput}
+          editable={false}
+          selectTextOnFocus={false}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.textInputWrapper} disabled>
         <TextInput
           pointerEvents="none"
           value={token}
@@ -125,7 +138,12 @@ function AddTokenScreen() {
         style={{ justifyContent: "flex-end", margin: 0 }}
         onBackdropPress={closePicker}
       >
-        <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)" }}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+        >
           <View
             style={{
               height: "35%",
@@ -137,7 +155,7 @@ function AddTokenScreen() {
               <TouchableOpacity onPress={closePicker}>
                 <Text style={styles.modalNavbarText}>Close</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={closePicker}>
+              <TouchableOpacity onPress={handleChoose}>
                 <Text style={styles.modalNavbarText}>Choose</Text>
               </TouchableOpacity>
             </View>
@@ -150,7 +168,7 @@ function AddTokenScreen() {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 }
 

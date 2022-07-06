@@ -12,7 +12,8 @@ import AddTokenScreen from "../screens/AddTokenScreen";
 
 const Stack = createNativeStackNavigator();
 
-axios.defaults.baseURL = "http://18.191.86.243:80";
+axios.defaults.baseURL = "http://18.191.86.243";
+axios.defaults.headers.common.accept = "application/json";
 
 function NavBarRender() {
   return <NavBar />;
