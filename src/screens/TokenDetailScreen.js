@@ -15,10 +15,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { setSelectedToken } from "../store/reducers/tokenReducer";
 import cryptoAxiosInstance from "../cryptoAxiosInstance";
+import Colors from "../constant/Colors";
 
 const styles = StyleSheet.create({
   safeAreaView: {
-    backgroundColor: "#1B1D24",
+    backgroundColor: Colors.background,
     flex: 1,
   },
   title: {
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
   },
   listWrapper: {
     flex: 1,
-    backgroundColor: "#029973",
+    backgroundColor: "black",
     borderWidth: 2,
     width: "100%",
     padding: 10,
@@ -72,30 +73,37 @@ const dateFormatter = (date) => {
 function TokenDetailScreen() {
   const dispatch = useDispatch();
   const { selectedToken } = useSelector((state) => state.token);
+  const { walletId } = useSelector((state) => state.auth);
 
+  const [price, setPrice] = useState(0);
   const [totalValue, setTotalValue] = useState(0);
 
   const fetchValue = async () => {
     const { data } = await cryptoAxiosInstance.get(
       `/price?fsym=${selectedToken.symbol}&tsyms=USD&api_key=${Config.CRYPTO_API_KEY}`,
     );
-    setTotalValue(
-      // eslint-disable-next-line operator-linebreak
-      data.USD *
-        selectedToken.positions.reduce(
-          (prev, cur) => prev + parseFloat(cur.amount, 10),
-          0,
-        ),
-    );
+    setPrice(data.USD);
+    setTotalValue(price * selectedToken.positions.reduce(
+      (prev, cur) => prev + parseFloat(cur.amount, 10),
+      0,
+    ));
   };
+
   useEffect(() => {
     fetchValue();
   }, []);
 
+  useEffect(() => {
+    setTotalValue(price * selectedToken.positions.reduce(
+      (prev, cur) => prev + parseFloat(cur.amount, 10),
+      0,
+    ));
+  }, [price]);
+
   const handleDeletePosition = (id) => async () => {
     try {
       await axios.post(
-        `/api/v1/wallet/2/${selectedToken.symbol}/position/delete`,
+        `/api/v1/wallet/${walletId}/${selectedToken.symbol}/position/delete`,
         {
           id,
         },
@@ -108,6 +116,10 @@ function TokenDetailScreen() {
           },
         }),
       );
+      setTotalValue(price * selectedToken.positions.reduce(
+        (prev, cur) => prev + parseFloat(cur.amount, 10),
+        0,
+      ));
     } catch (err) {
       console.log(err);
     }

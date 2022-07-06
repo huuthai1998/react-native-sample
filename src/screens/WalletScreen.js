@@ -1,3 +1,4 @@
+import Config from "react-native-config";
 import React, { useEffect, useState } from "react";
 import {
   Platform,
@@ -17,6 +18,7 @@ import Colors from "../constant/Colors";
 import AppScreens from "../constant/AppScreens";
 import { setWalletId } from "../store/reducers/authReducer";
 import { setSelectedToken } from "../store/reducers/tokenReducer";
+import cryptoAxiosInstance from "../cryptoAxiosInstance";
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -26,8 +28,6 @@ const styles = StyleSheet.create({
   totalEvaluation: {
     marginBottom: 5,
     paddingLeft: 10,
-    // flexDirection: "row",
-    // justifyContent: "space-between",
   },
   totalTitle: {
     color: Colors.label,
@@ -95,12 +95,7 @@ function renderItemSeparator() {
   return <View style={styles.itemSeparator} />;
 }
 
-function QuickActions(
-  navigation,
-  item,
-  addPositionTokenHandler,
-  deleteTokenHandler,
-) {
+function QuickActions(item, addPositionTokenHandler, deleteTokenHandler) {
   return (
     <View style={styles.qaContainer}>
       <View style={[styles.button]}>
@@ -127,6 +122,35 @@ function WalletScreen() {
 
   const [tokens, setTokens] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [prices, setPrices] = useState({});
+  const [totalMoney, setTotalMoney] = useState(0);
+
+  const fetchPrices = async () => {
+    const promises = tokens.map((token) => cryptoAxiosInstance.get(
+      `/price?fsym=${token.symbol}&tsyms=USD&api_key=${Config.CRYPTO_API_KEY}`,
+    ));
+    const response = await Promise.all(promises);
+    const data = {};
+    response.forEach((res, i) => {
+      data[tokens[i].symbol] = res.data.USD;
+    });
+    setPrices(data);
+  };
+
+  useEffect(() => {
+    fetchPrices();
+  }, [tokens]);
+
+  useEffect(() => {
+    let money = 0;
+    tokens.forEach((token) => {
+      money += prices[token.symbol] * token.positions.reduce(
+        (prev, cur) => prev + parseFloat(cur.amount, 10),
+        0,
+      );
+    });
+    setTotalMoney(money);
+  }, [prices]);
 
   const selectTokenHandler = (item) => () => {
     dispatch(setSelectedToken({ selectedToken: item }));
@@ -134,7 +158,6 @@ function WalletScreen() {
   };
 
   const deleteTokenHandler = (item) => async () => {
-    console.log(`/api/v1/wallet/${walletId}/token/delete`);
     const { data } = await axios.post(
       `/api/v1/wallet/${walletId}/token/delete`,
       { id: item.id },
@@ -175,7 +198,12 @@ function WalletScreen() {
           <>
             <View style={styles.totalEvaluation}>
               <Text style={styles.totalTitle}>Total Evaluation:</Text>
-              <Text style={styles.totalMoney}>0.00 $</Text>
+              <Text style={styles.totalMoney}>
+                {totalMoney ? totalMoney.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }) : "$0.00"}
+              </Text>
             </View>
             {tokens && tokens.length > 0 ? (
               <SwipeableFlatList
@@ -188,14 +216,17 @@ function WalletScreen() {
                       id={item.id}
                       symbol={item.symbol}
                       name={item.name}
+                      amount={item.positions.reduce(
+                        (prev, cur) => prev + parseFloat(cur.amount, 10),
+                        0,
+                      )}
                       // src={tokenIcons[token.symbol]}
                       src=""
                     />
                   </Pressable>
                 )}
-                maxSwipeDistance={200}
+                maxSwipeDistance={160}
                 renderQuickActions={({ item }) => QuickActions(
-                  navigation,
                   item,
                   addPositionTokenHandler,
                   deleteTokenHandler,

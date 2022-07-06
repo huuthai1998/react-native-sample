@@ -10,8 +10,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 7,
     flexDirection: "row",
+    justifyContent: "space-between",
     margin: 5,
     padding: 10,
+  },
+  main: {
+    flexDirection: "row",
+  },
+  amountText: {
+    fontSize: 15,
+    color: "white",
+    textAlign: "right",
+    marginBottom: 10,
+  },
+  amount: {
+    textAlign: "right",
+    color: "#8AC135",
   },
   content: {
     flexDirection: "column",
@@ -36,13 +50,19 @@ const styles = StyleSheet.create({
   },
 });
 
-function CardToken({ id, symbol, name, src }) {
+function CardToken({ id, symbol, name, amount, src }) {
   return (
     <View style={styles.container}>
-      <Image source={src} style={styles.image} title={id} />
+      <View style={styles.main}>
+        <Image source={src} style={styles.image} title={id} />
+        <View style={styles.content}>
+          <Text style={styles.title}>{symbol}</Text>
+          <Text style={styles.name}>{name}</Text>
+        </View>
+      </View>
       <View style={styles.content}>
-        <Text style={styles.title}>{symbol}</Text>
-        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.amountText}>Amount</Text>
+        <Text style={styles.amount}>{amount.toFixed(2)}</Text>
       </View>
     </View>
   );
@@ -53,6 +73,7 @@ CardToken.propTypes = {
   symbol: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   src: PropTypes.string.isRequired,
+  amount: PropTypes.number.isRequired,
 };
 
 export default CardToken;
