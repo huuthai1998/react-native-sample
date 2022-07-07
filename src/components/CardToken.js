@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50 / 2,
     overflow: "hidden",
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: "white",
   },
 });
@@ -72,8 +72,8 @@ CardToken.propTypes = {
   id: PropTypes.number.isRequired,
   symbol: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  src: PropTypes.string.isRequired,
   amount: PropTypes.number.isRequired,
+  src: PropTypes.node.isRequired,
 };
 
 export default CardToken;

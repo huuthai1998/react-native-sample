@@ -6,7 +6,7 @@ import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import Modal from "react-native-modal";
-import tokenList from "../symbol.json";
+import TokenCodes from "../constant/TokenCodes";
 import Colors from "../constant/Colors";
 
 const styles = StyleSheet.create({
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
 });
 
 function renderItems() {
-  return tokenList.map((item) => (
-    <PickerIOS.Item label={item.code} value={item.value} key={item.code} color="white" />
+  return TokenCodes.map((item) => (
+    <PickerIOS.Item label={item.code} value={item.name} key={item.code} color="white" />
   ));
 }
 
@@ -72,7 +72,7 @@ function AddTokenScreen() {
 
   const handleChoose = () => {
     setShowPicker(false);
-    setSymbol(tokenList.find((i) => i.value === token).code);
+    setSymbol(TokenCodes.find((i) => i.name === token).code);
   };
 
   const handleAddToken = async () => {

@@ -4,7 +4,6 @@ import {
   Platform,
   SafeAreaView,
   StyleSheet,
-  // ScrollView,
   Text,
   View,
   Pressable,
@@ -19,6 +18,7 @@ import AppScreens from "../constant/AppScreens";
 import { setWalletId } from "../store/reducers/authReducer";
 import { setSelectedToken } from "../store/reducers/tokenReducer";
 import cryptoAxiosInstance from "../cryptoAxiosInstance";
+import TokenIcons from "../constant/TokenIcons";
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -210,9 +210,8 @@ function WalletScreen() {
                 keyExtractor={extractItemKey}
                 data={tokens}
                 renderItem={({ item }) => (
-                  <Pressable onPress={selectTokenHandler(item)}>
+                  <Pressable onPress={selectTokenHandler(item)} key={item.id}>
                     <CardToken
-                      key={item.id}
                       id={item.id}
                       symbol={item.symbol}
                       name={item.name}
@@ -220,8 +219,7 @@ function WalletScreen() {
                         (prev, cur) => prev + parseFloat(cur.amount, 10),
                         0,
                       )}
-                      // src={tokenIcons[token.symbol]}
-                      src=""
+                      src={TokenIcons[item.symbol]}
                     />
                   </Pressable>
                 )}
