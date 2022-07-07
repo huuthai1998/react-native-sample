@@ -1,8 +1,8 @@
 import { Picker, PickerIOS } from "@react-native-picker/picker";
 import axios from "axios";
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { Text, View, StyleSheet, Platform, TextInput, TouchableOpacity } from "react-native";
+// import {  } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import Modal from "react-native-modal";
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     display: "flex",
     alignItems: "center",
+    height: 45,
   },
   text: {
     color: "white",
@@ -59,8 +60,13 @@ const styles = StyleSheet.create({
 });
 
 function renderItems() {
+  if (Platform.OS === "ios") {
+    return tokenList.map((item) => (
+      <PickerIOS.Item label={item.code} value={item.value} key={item.code} color="white" />
+    ));
+  }
   return tokenList.map((item) => (
-    <PickerIOS.Item label={item.code} value={item.value} key={item.code} color="white" />
+    <Picker.Item label={item.code} value={item.value} key={item.code} />
   ));
 }
 
@@ -98,10 +104,7 @@ function AddTokenScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.text}>Add new token to your wallet</Text>
-      <TouchableOpacity
-        onPress={handleShowPicker}
-        style={styles.textInputWrapper}
-      >
+      <TouchableOpacity onPress={handleShowPicker} style={styles.textInputWrapper}>
         <Text style={styles.label}>Code:</Text>
         <TextInput
           pointerEvents="none"
@@ -160,10 +163,7 @@ function AddTokenScreen() {
                 <Text style={styles.modalNavbarText}>Choose</Text>
               </TouchableOpacity>
             </View>
-            <Picker
-              selectedValue={token}
-              onValueChange={(itemValue) => setToken(itemValue)}
-            >
+            <Picker selectedValue={token} onValueChange={(itemValue) => setToken(itemValue)}>
               {renderItems()}
             </Picker>
           </View>

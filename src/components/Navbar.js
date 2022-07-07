@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, Text } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+// import { TouchableOpacity } from "react-native-gesture-handler";
 import AppScreens from "../constant/AppScreens";
 
 const styles = StyleSheet.create({

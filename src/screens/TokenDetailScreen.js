@@ -1,11 +1,19 @@
 // import { useNavigation } from "@react-navigation/native";
 import Config from "react-native-config";
 import React, { useEffect, useState } from "react";
-import { Platform, SafeAreaView, StyleSheet, ScrollView, Text, View } from "react-native";
+import {
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  Text,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import axios from "axios";
 // import { useSelector } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
-import { TouchableOpacity } from "react-native-gesture-handler";
+// import { TouchableOpacity } from "react-native-gesture-handler";
 import { setSelectedToken } from "../store/reducers/tokenReducer";
 import cryptoAxiosInstance from "../cryptoAxiosInstance";
 import Colors from "../constant/Colors";
