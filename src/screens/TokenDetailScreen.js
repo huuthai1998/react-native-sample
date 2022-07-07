@@ -1,14 +1,7 @@
 // import { useNavigation } from "@react-navigation/native";
 import Config from "react-native-config";
 import React, { useEffect, useState } from "react";
-import {
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { Platform, SafeAreaView, StyleSheet, ScrollView, Text, View } from "react-native";
 import axios from "axios";
 // import { useSelector } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
@@ -83,10 +76,13 @@ function TokenDetailScreen() {
       `/price?fsym=${selectedToken.symbol}&tsyms=USD&api_key=${Config.CRYPTO_API_KEY}`,
     );
     setPrice(data.USD);
-    setTotalValue(price * selectedToken.positions.reduce(
-      (prev, cur) => prev + parseFloat(cur.amount, 10),
-      0,
-    ));
+    //  prettier-ignore
+    setTotalValue(
+      price * selectedToken.positions.reduce(
+        (prev, cur) => prev + parseFloat(cur.amount, 10),
+        0,
+      ),
+    );
   };
 
   useEffect(() => {
@@ -94,20 +90,16 @@ function TokenDetailScreen() {
   }, []);
 
   useEffect(() => {
-    setTotalValue(price * selectedToken.positions.reduce(
-      (prev, cur) => prev + parseFloat(cur.amount, 10),
-      0,
-    ));
+    setTotalValue(
+      price * selectedToken.positions.reduce((prev, cur) => prev + parseFloat(cur.amount, 10), 0),
+    );
   }, [price]);
 
   const handleDeletePosition = (id) => async () => {
     try {
-      await axios.post(
-        `/api/v1/wallet/${walletId}/${selectedToken.symbol}/position/delete`,
-        {
-          id,
-        },
-      );
+      await axios.post(`/api/v1/wallet/${walletId}/${selectedToken.symbol}/position/delete`, {
+        id,
+      });
       dispatch(
         setSelectedToken({
           selectedToken: {
@@ -116,10 +108,12 @@ function TokenDetailScreen() {
           },
         }),
       );
-      setTotalValue(price * selectedToken.positions.reduce(
-        (prev, cur) => prev + parseFloat(cur.amount, 10),
-        0,
-      ));
+      // prettier-ignore
+      setTotalValue(
+        price * selectedToken.positions
+          .filter((pos) => pos.id !== id)
+          .reduce((prev, cur) => prev + parseFloat(cur.amount, 10), 0),
+      );
     } catch (err) {
       console.log(err);
     }
@@ -140,18 +134,13 @@ function TokenDetailScreen() {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <View
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.content}
-      >
+      <View behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.content}>
         <View style={styles.detailWrapper}>
           <View>
             <Text style={styles.title}>Detail</Text>
             <Text style={styles.text}>{`Symbol: ${selectedToken.symbol}`}</Text>
             <Text style={styles.text}>{`Name: ${selectedToken.name}`}</Text>
-            <Text style={styles.text}>
-              {`Description: ${selectedToken.description}`}
-            </Text>
+            <Text style={styles.text}>{`Description: ${selectedToken.description}`}</Text>
           </View>
           <View>
             <Text style={styles.text}>
