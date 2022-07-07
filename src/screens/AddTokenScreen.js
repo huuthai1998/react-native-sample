@@ -6,7 +6,7 @@ import { Text, View, StyleSheet, Platform, TextInput, TouchableOpacity } from "r
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import Modal from "react-native-modal";
-import tokenList from "../symbol.json";
+import TokenCodes from "../constant/TokenCodes";
 import Colors from "../constant/Colors";
 
 const styles = StyleSheet.create({
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     display: "flex",
     alignItems: "center",
-    height: 45,
+    height: 40,
   },
   text: {
     color: "white",
@@ -61,12 +61,12 @@ const styles = StyleSheet.create({
 
 function renderItems() {
   if (Platform.OS === "ios") {
-    return tokenList.map((item) => (
-      <PickerIOS.Item label={item.code} value={item.value} key={item.code} color="white" />
+    return TokenCodes.map((item) => (
+      <PickerIOS.Item label={item.code} value={item.name} key={item.code} color="white" />
     ));
   }
-  return tokenList.map((item) => (
-    <Picker.Item label={item.code} value={item.value} key={item.code} />
+  return TokenCodes.map((item) => (
+    <Picker.Item label={item.code} value={item.name} key={item.code} />
   ));
 }
 
@@ -78,7 +78,7 @@ function AddTokenScreen() {
 
   const handleChoose = () => {
     setShowPicker(false);
-    setSymbol(tokenList.find((i) => i.value === token).code);
+    setSymbol(TokenCodes.find((i) => i.name === token).code);
   };
 
   const handleAddToken = async () => {
@@ -157,13 +157,18 @@ function AddTokenScreen() {
           >
             <View style={styles.modalNavbar}>
               <TouchableOpacity onPress={closePicker}>
-                <Text style={styles.modalNavbarText}>Close</Text>
+                <Text style={styles.modalNavbarText}> </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleChoose}>
                 <Text style={styles.modalNavbarText}>Choose</Text>
               </TouchableOpacity>
             </View>
             <Picker selectedValue={token} onValueChange={(itemValue) => setToken(itemValue)}>
+              {Platform.OS === "ios" ? (
+                <PickerIOS.Item label="" value="" key="null" color="white" />
+              ) : (
+                <Picker.Item label="" value="" key="null" />
+              )}
               {renderItems()}
             </Picker>
           </View>
