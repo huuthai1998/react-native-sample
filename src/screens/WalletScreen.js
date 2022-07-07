@@ -7,11 +7,15 @@ import {
   Text,
   View,
   Pressable,
+  Alert,
 } from "react-native";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import SwipeableFlatList from "react-native-swipeable-list";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import CardToken from "../components/CardToken";
 import Colors from "../constant/Colors";
 import AppScreens from "../constant/AppScreens";
@@ -61,20 +65,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
   },
-  button: {
-    width: 80,
+  button1: {
+    width: 70,
     alignItems: "center",
     justifyContent: "center",
+    borderColor: Colors.borderCard,
+    borderWidth: 1,
+    marginVertical: 5,
   },
-  buttonText: {
-    fontWeight: "bold",
-    opacity: 0.87,
-  },
-  button1Text: {
-    color: "#BB86FC",
-  },
-  button2Text: {
-    color: "#03DAC6",
+  button2: {
+    width: 70,
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: Colors.borderCard,
+    borderWidth: 1,
+    marginVertical: 5,
+    marginRight: 5,
+    borderTopRightRadius: 7,
+    borderBottomRightRadius: 7,
   },
   contentContainerStyle: {
     flexGrow: 1,
@@ -87,29 +95,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const extractItemKey = (item) => {
-  item.id.toString();
-};
-
 function renderItemSeparator() {
   return <View style={styles.itemSeparator} />;
 }
 
-function QuickActions(item, addPositionTokenHandler, deleteTokenHandler) {
+function QuickActions(item, addPositionTokenHandler, onDeleteToken) {
   return (
     <View style={styles.qaContainer}>
-      <View style={[styles.button]}>
-        <Pressable onPress={addPositionTokenHandler(item)}>
-          <Text style={[styles.buttonText, styles.button1Text]}>
-            Add position
-          </Text>
-        </Pressable>
-      </View>
-      <View style={[styles.button]}>
-        <Pressable onPress={deleteTokenHandler(item)}>
-          <Text style={[styles.buttonText, styles.button2Text]}>Delete</Text>
-        </Pressable>
-      </View>
+      <Pressable onPress={addPositionTokenHandler(item)} style={styles.button1}>
+        <FontAwesomeIcon icon={faPlus} color="white" />
+      </Pressable>
+      <Pressable onPress={onDeleteToken(item)} style={styles.button2}>
+        <FontAwesomeIcon icon={faTrashCan} color="white" />
+      </Pressable>
     </View>
   );
 }
@@ -158,12 +156,23 @@ function WalletScreen() {
   };
 
   const deleteTokenHandler = (item) => async () => {
-    const { data } = await axios.post(
+    await axios.post(
       `/api/v1/wallet/${walletId}/token/delete`,
       { id: item.id },
     );
-    console.log(data);
+    console.log("Delete token!");
     setTokens(tokens.filter((token) => token.id !== item.id));
+  };
+
+  const onDeleteToken = (item) => () => {
+    Alert.alert(
+      "Warning",
+      "Are your sure you want to delete this token?",
+      [
+        { text: "No", style: "cancel" },
+        { text: "Yes", onPress: deleteTokenHandler(item) },
+      ],
+    );
   };
 
   const addPositionTokenHandler = (item) => () => {
@@ -207,7 +216,7 @@ function WalletScreen() {
             </View>
             {tokens && tokens.length > 0 ? (
               <SwipeableFlatList
-                keyExtractor={extractItemKey}
+                keyExtractor={(item) => item.id}
                 data={tokens}
                 renderItem={({ item }) => (
                   <Pressable onPress={selectTokenHandler(item)} key={item.id}>
@@ -223,11 +232,11 @@ function WalletScreen() {
                     />
                   </Pressable>
                 )}
-                maxSwipeDistance={160}
+                maxSwipeDistance={140}
                 renderQuickActions={({ item }) => QuickActions(
                   item,
                   addPositionTokenHandler,
-                  deleteTokenHandler,
+                  onDeleteToken,
                 )}
                 contentContainerStyle={styles.contentContainerStyle}
                 // shouldBounceOnMount={true}

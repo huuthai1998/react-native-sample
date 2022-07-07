@@ -6,7 +6,7 @@ import Colors from "../constant/Colors";
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.card,
-    borderColor: "#30333A",
+    borderColor: Colors.borderCard,
     borderWidth: 1,
     borderRadius: 7,
     flexDirection: "row",

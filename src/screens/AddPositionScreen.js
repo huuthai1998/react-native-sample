@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: "#029973",
+    backgroundColor: Colors.button,
     color: "white",
     borderRadius: 8,
     display: "flex",
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   textInputWrapper: {
     marginTop: 10,
-    backgroundColor: "rgba(116, 116, 128, 0.4)",
+    backgroundColor: Colors.input,
     height: 50,
     borderRadius: 8,
   },

@@ -8,11 +8,14 @@ import {
   ScrollView,
   Text,
   View,
+  Alert,
 } from "react-native";
 import axios from "axios";
 // import { useSelector } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { setSelectedToken } from "../store/reducers/tokenReducer";
 import cryptoAxiosInstance from "../cryptoAxiosInstance";
 import Colors from "../constant/Colors";
@@ -49,14 +52,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   card: {
+    backgroundColor: Colors.card,
+    borderColor: Colors.borderCard,
     flexDirection: "row",
     justifyContent: "space-between",
     borderWidth: 1,
-    borderColor: "white",
-    backgroundColor: "white",
-    borderRadius: 10,
+    borderRadius: 12,
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 10,
+  },
+  cardText: {
+    color: "white",
+  },
+  cardButton: {
+    padding: 10,
   },
   text: {
     color: "white",
@@ -128,15 +137,26 @@ function TokenDetailScreen() {
     ));
   }, [selectedToken]);
 
+  const onDeletePosition = (id) => () => {
+    Alert.alert(
+      "Warning",
+      "Are your sure you want to delete this position?",
+      [
+        { text: "No", style: "cancel" },
+        { text: "Yes", onPress: handleDeletePosition(id) },
+      ],
+    );
+  };
+
   function renderPosition() {
     return selectedToken.positions.map((pos) => (
       <View style={styles.card} key={pos.id}>
         <View>
-          <Text>{`Amount: ${pos.amount}`}</Text>
-          <Text>{`Bought on: ${dateFormatter(pos.createdAt)}`}</Text>
+          <Text style={styles.cardText}>{`Amount: ${pos.amount.toFixed(2)}`}</Text>
+          <Text style={styles.cardText}>{`Bought on: ${dateFormatter(pos.createdAt)}`}</Text>
         </View>
-        <TouchableOpacity onPress={handleDeletePosition(pos.id)}>
-          <Text style={{ color: "red" }}>REMOVE</Text>
+        <TouchableOpacity onPress={onDeletePosition(pos.id)} style={styles.cardButton}>
+          <FontAwesomeIcon icon={faCircleXmark} color={Colors.label} size="20x" />
         </TouchableOpacity>
       </View>
     ));
@@ -150,7 +170,6 @@ function TokenDetailScreen() {
       >
         <View style={styles.detailWrapper}>
           <View>
-            <Text style={styles.title}>Detail</Text>
             <Text style={styles.text}>{`Symbol: ${selectedToken.symbol}`}</Text>
             <Text style={styles.text}>{`Name: ${selectedToken.name}`}</Text>
             <Text style={styles.text}>

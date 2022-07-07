@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import AppScreens from "../constant/AppScreens";
+import Colors from "../constant/Colors";
 
 const styles = StyleSheet.create({
   container: {
@@ -10,14 +11,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   addButton: {
-    backgroundColor: "#747480",
+    backgroundColor: Colors.input,
     borderRadius: 12,
   },
   text: {
     color: "white",
     alignSelf: "flex-end",
     fontWeight: "600",
-    padding: 5,
+    paddingHorizontal: 11,
+    paddingVertical: 5,
   },
 });
 
