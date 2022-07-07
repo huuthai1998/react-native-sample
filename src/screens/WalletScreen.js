@@ -1,14 +1,9 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable function-paren-newline */
+/* eslint-disable implicit-arrow-linebreak */
 import Config from "react-native-config";
 import React, { useEffect, useState } from "react";
-import {
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  Alert,
-} from "react-native";
+import { Platform, SafeAreaView, StyleSheet, Text, View, Pressable, Alert } from "react-native";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
@@ -16,6 +11,7 @@ import SwipeableFlatList from "react-native-swipeable-list";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import moment from "moment";
 import CardToken from "../components/CardToken";
 import Colors from "../constant/Colors";
 import AppScreens from "../constant/AppScreens";
@@ -141,9 +137,12 @@ function WalletScreen() {
   const [totalMoney, setTotalMoney] = useState(0);
 
   const fetchPrices = async () => {
-    const promises = tokens.map((token) => cryptoAxiosInstance.get(
-      `/price?fsym=${token.symbol}&tsyms=USD&api_key=${Config.CRYPTO_API_KEY}`,
-    ));
+    const promises = tokens.map((token) =>
+      cryptoAxiosInstance.get(
+        `/price?fsym=${token.symbol}&tsyms=USD&api_key=${Config.CRYPTO_API_KEY}`,
+      ),
+    );
+
     const response = await Promise.all(promises);
     const data = {};
     response.forEach((res, i) => {
@@ -159,10 +158,9 @@ function WalletScreen() {
   useEffect(() => {
     let money = 0;
     tokens.forEach((token) => {
-      money += prices[token.symbol] * token.positions.reduce(
-        (prev, cur) => prev + parseFloat(cur.amount, 10),
-        0,
-      );
+      money +=
+        prices[token.symbol] *
+        token.positions.reduce((prev, cur) => prev + parseFloat(cur.amount, 10), 0);
     });
     setTotalMoney(money);
   }, [prices]);
@@ -173,23 +171,16 @@ function WalletScreen() {
   };
 
   const deleteTokenHandler = (item) => async () => {
-    await axios.post(
-      `/api/v1/wallet/${walletId}/token/delete`,
-      { id: item.id },
-    );
+    await axios.post(`/api/v1/wallet/${walletId}/token/delete`, { id: item.id });
     console.log("Delete token!");
     setTokens(tokens.filter((token) => token.id !== item.id));
   };
 
   const onDeleteToken = (item) => () => {
-    Alert.alert(
-      "Warning",
-      "Are your sure you want to delete this token?",
-      [
-        { text: "No", style: "cancel" },
-        { text: "Yes", onPress: deleteTokenHandler(item) },
-      ],
-    );
+    Alert.alert("Warning", "Are your sure you want to delete this token?", [
+      { text: "No", style: "cancel" },
+      { text: "Yes", onPress: deleteTokenHandler(item) },
+    ]);
   };
 
   const addPositionTokenHandler = (item) => () => {
@@ -214,8 +205,7 @@ function WalletScreen() {
   }, [isFocused]);
 
   const getDate = () => {
-    const currentdate = new Date();
-    const datetime = `${currentdate.getDate()}/${currentdate.getMonth() + 1}/${currentdate.getFullYear()} ${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`;
+    const datetime = moment().format("DD/MM/YYYY, hh:mm");
     return datetime;
   };
 
@@ -257,6 +247,7 @@ function WalletScreen() {
                         (prev, cur) => prev + parseFloat(cur.amount, 10),
                         0,
                       )}
+                      price={prices[item.symbol] ? prices[item.symbol] : 0}
                       src={TokenIcons[item.symbol]}
                     />
                   </Pressable>

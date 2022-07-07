@@ -12,8 +12,8 @@ import {
   Alert,
 } from "react-native";
 import axios from "axios";
-// import { useSelector } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { setSelectedToken } from "../store/reducers/tokenReducer";
@@ -72,11 +72,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
+  evaluation: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "800",
+  },
 });
 
 const dateFormatter = (date) => {
-  const formatDate = new Date(date);
-  return `${formatDate.getDate()}/${formatDate.getMonth()}/${formatDate.getFullYear()} ${formatDate.getHours()}:${formatDate.getMinutes()}`;
+  const formatDate = moment(date).format("DD/MM/YYYY, hh:mm");
+  return formatDate;
 };
 
 function TokenDetailScreen() {
@@ -103,7 +108,7 @@ function TokenDetailScreen() {
 
   useEffect(() => {
     fetchValue();
-  }, []);
+  }, [selectedToken]);
 
   useEffect(() => {
     setTotalValue(
@@ -156,7 +161,7 @@ function TokenDetailScreen() {
           <Text style={styles.cardText}>{`Bought on: ${dateFormatter(pos.createdAt)}`}</Text>
         </View>
         <TouchableOpacity onPress={onDeletePosition(pos.id)} style={styles.cardButton}>
-          <FontAwesomeIcon icon={faCircleXmark} color={Colors.label} size="20x" />
+          <FontAwesomeIcon icon={faCircleXmark} color="#D2042D" size={20} />
         </TouchableOpacity>
       </View>
     ));
@@ -172,8 +177,8 @@ function TokenDetailScreen() {
             <Text style={styles.text}>{`Description: ${selectedToken.description}`}</Text>
           </View>
           <View>
-            <Text style={styles.text}>
-              {`Total Evaluation: ${totalValue.toLocaleString("en-US", {
+            <Text style={styles.evaluation}>
+              {`${totalValue.toLocaleString("en-US", {
                 style: "currency",
                 currency: "USD",
               })}`}

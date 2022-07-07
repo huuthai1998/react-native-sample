@@ -31,6 +31,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginLeft: 10,
   },
+  contentLine: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   title: {
     color: "white",
     fontSize: 20,
@@ -50,7 +54,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function CardToken({ id, symbol, name, amount, src }) {
+function CardToken({ id, symbol, name, amount, src = "", price = 0 }) {
   return (
     <View style={styles.container}>
       <View style={styles.main}>
@@ -61,8 +65,28 @@ function CardToken({ id, symbol, name, amount, src }) {
         </View>
       </View>
       <View style={styles.content}>
-        <Text style={styles.amountText}>Amount</Text>
-        <Text style={styles.amount}>{amount.toFixed(2)}</Text>
+        <View style={styles.contentLine}>
+          <Text style={styles.amountText}>Amount</Text>
+          <Text style={styles.amount}>{amount % 1 === 0 ? amount : amount.toFixed(2)}</Text>
+        </View>
+        <View style={styles.contentLine}>
+          <Text style={styles.amountText}>Exchange rate</Text>
+          <Text style={styles.amount}>
+            {price.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
+          </Text>
+        </View>
+        <View style={styles.contentLine}>
+          <Text style={styles.amountText}>Evaluation</Text>
+          <Text style={styles.amount}>
+            {(price * amount).toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -70,6 +94,7 @@ function CardToken({ id, symbol, name, amount, src }) {
 
 CardToken.propTypes = {
   id: PropTypes.number.isRequired,
+  price: PropTypes.number.isRequired,
   symbol: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   amount: PropTypes.number.isRequired,

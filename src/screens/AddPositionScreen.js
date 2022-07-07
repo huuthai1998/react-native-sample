@@ -4,8 +4,9 @@ import React, { useState } from "react";
 import { Text, View, StyleSheet, Alert, TextInput, TouchableOpacity } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Colors from "../constant/Colors";
+import { setSelectedToken } from "../store/reducers/tokenReducer";
 
 const styles = StyleSheet.create({
   container: {
@@ -64,6 +65,7 @@ function AddPositionScreen() {
   const { selectedToken } = useSelector((state) => state.token);
   const navigation = useNavigation();
   const [amount, setAmount] = useState(0);
+  const dispatch = useDispatch();
 
   const onChangeHandler = () => (value) => {
     setAmount(parseFloat(value, 10));
@@ -75,9 +77,24 @@ function AddPositionScreen() {
 
   const handleAddToken = async () => {
     try {
-      await axios.post(`/api/v1/wallet/${walletId}/${selectedToken.symbol}/position`, {
-        amount,
-      });
+      const { data } = await axios.post(
+        `/api/v1/wallet/${walletId}/${selectedToken.symbol}/position`,
+        {
+          amount,
+        },
+      );
+
+      dispatch(
+        setSelectedToken({
+          selectedToken: {
+            ...selectedToken,
+            positions: [
+              ...selectedToken.positions,
+              { amount, id: data.data.ID, createdAt: data.data.CreatedAt },
+            ],
+          },
+        }),
+      );
       // alert(`Successfully added ${token} to your wallet!`);
       Alert.alert("Success", `Successfully added ${amount} tokens of ${selectedToken.symbol}!`, [
         { text: "OK", onPress: goBack },

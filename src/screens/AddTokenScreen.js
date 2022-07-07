@@ -82,7 +82,6 @@ function AddTokenScreen() {
 
   const handleChoose = () => {
     setShowPicker(false);
-    setSymbol(TokenCodes.find((i) => i.name === token).code);
   };
 
   const handleAddToken = async () => {
@@ -102,19 +101,11 @@ function AddTokenScreen() {
   const onAddToken = async () => {
     const message = await handleAddToken();
     if (message === false) {
-      Alert.alert(
-        "Can not add!",
-        [
-          { text: "OK", style: "cancel" },
-        ],
-      );
+      Alert.alert("Can not add!", [{ text: "OK", style: "cancel" }]);
     } else {
-      Alert.alert(
-        "Successfully added token to your wallet",
-        [
-          { text: "OK", onPress: () => navitgator.navigate(AppScreens.WALLET_SCREEN) },
-        ],
-      );
+      Alert.alert("Success", "Successfully added token to your wallet", [
+        { text: "OK", onPress: () => navitgator.navigate(AppScreens.WALLET_SCREEN) },
+      ]);
     }
   };
 
@@ -188,7 +179,17 @@ function AddTokenScreen() {
                 <Text style={styles.modalNavbarText}>Choose</Text>
               </TouchableOpacity>
             </View>
-            <Picker selectedValue={token} onValueChange={(itemValue) => setToken(itemValue)}>
+            <Picker
+              selectedValue={token}
+              onValueChange={(itemValue) => {
+                setToken(itemValue);
+                setSymbol(
+                  TokenCodes.find((i) => i.name === itemValue)
+                    ? TokenCodes.find((i) => i.name === itemValue).code
+                    : "",
+                );
+              }}
+            >
               {Platform.OS === "ios" ? (
                 <PickerIOS.Item label="" value="" key="null" color="white" />
               ) : (
