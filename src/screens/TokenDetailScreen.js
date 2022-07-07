@@ -8,12 +8,12 @@ import {
   ScrollView,
   Text,
   View,
+  TouchableOpacity,
   Alert,
 } from "react-native";
 import axios from "axios";
 // import { useSelector } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { setSelectedToken } from "../store/reducers/tokenReducer";
@@ -92,10 +92,13 @@ function TokenDetailScreen() {
       `/price?fsym=${selectedToken.symbol}&tsyms=USD&api_key=${Config.CRYPTO_API_KEY}`,
     );
     setPrice(data.USD);
-    setTotalValue(price * selectedToken.positions.reduce(
-      (prev, cur) => prev + parseFloat(cur.amount, 10),
-      0,
-    ));
+    //  prettier-ignore
+    setTotalValue(
+      price * selectedToken.positions.reduce(
+        (prev, cur) => prev + parseFloat(cur.amount, 10),
+        0,
+      ),
+    );
   };
 
   useEffect(() => {
@@ -103,20 +106,16 @@ function TokenDetailScreen() {
   }, []);
 
   useEffect(() => {
-    setTotalValue(price * selectedToken.positions.reduce(
-      (prev, cur) => prev + parseFloat(cur.amount, 10),
-      0,
-    ));
+    setTotalValue(
+      price * selectedToken.positions.reduce((prev, cur) => prev + parseFloat(cur.amount, 10), 0),
+    );
   }, [price]);
 
   const handleDeletePosition = (id) => async () => {
     try {
-      await axios.post(
-        `/api/v1/wallet/${walletId}/${selectedToken.symbol}/position/delete`,
-        {
-          id,
-        },
-      );
+      await axios.post(`/api/v1/wallet/${walletId}/${selectedToken.symbol}/position/delete`, {
+        id,
+      });
       dispatch(
         setSelectedToken({
           selectedToken: {
@@ -125,34 +124,35 @@ function TokenDetailScreen() {
           },
         }),
       );
+      // prettier-ignore
+      setTotalValue(
+        price * selectedToken.positions
+          .filter((pos) => pos.id !== id)
+          .reduce((prev, cur) => prev + parseFloat(cur.amount, 10), 0),
+      );
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
-    setTotalValue(price * selectedToken.positions.reduce(
-      (prev, cur) => prev + parseFloat(cur.amount, 10),
-      0,
-    ));
+    setTotalValue(
+      price * selectedToken.positions.reduce((prev, cur) => prev + parseFloat(cur.amount, 10), 0),
+    );
   }, [selectedToken]);
 
   const onDeletePosition = (id) => () => {
-    Alert.alert(
-      "Warning",
-      "Are your sure you want to delete this position?",
-      [
-        { text: "No", style: "cancel" },
-        { text: "Yes", onPress: handleDeletePosition(id) },
-      ],
-    );
+    Alert.alert("Warning", "Are your sure you want to delete this position?", [
+      { text: "No", style: "cancel" },
+      { text: "Yes", onPress: handleDeletePosition(id) },
+    ]);
   };
 
   function renderPosition() {
     return selectedToken.positions.map((pos) => (
       <View style={styles.card} key={pos.id}>
         <View>
-          <Text style={styles.cardText}>{`Amount: ${pos.amount.toFixed(2)}`}</Text>
+          <Text style={styles.cardText}>{`Amount: ${pos.amount}`}</Text>
           <Text style={styles.cardText}>{`Bought on: ${dateFormatter(pos.createdAt)}`}</Text>
         </View>
         <TouchableOpacity onPress={onDeletePosition(pos.id)} style={styles.cardButton}>
@@ -164,17 +164,12 @@ function TokenDetailScreen() {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <View
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.content}
-      >
+      <View behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.content}>
         <View style={styles.detailWrapper}>
           <View>
             <Text style={styles.text}>{`Symbol: ${selectedToken.symbol}`}</Text>
             <Text style={styles.text}>{`Name: ${selectedToken.name}`}</Text>
-            <Text style={styles.text}>
-              {`Description: ${selectedToken.description}`}
-            </Text>
+            <Text style={styles.text}>{`Description: ${selectedToken.description}`}</Text>
           </View>
           <View>
             <Text style={styles.text}>

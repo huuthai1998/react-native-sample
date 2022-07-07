@@ -1,8 +1,8 @@
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Alert, TextInput, TouchableOpacity } from "react-native";
 
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import Colors from "../constant/Colors";
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     display: "flex",
     alignItems: "center",
+    height: 40,
   },
   text: {
     color: "white",
@@ -61,20 +62,26 @@ const styles = StyleSheet.create({
 function AddPositionScreen() {
   const { walletId } = useSelector((state) => state.auth);
   const { selectedToken } = useSelector((state) => state.token);
+  const navigation = useNavigation();
   const [amount, setAmount] = useState(0);
 
   const onChangeHandler = () => (value) => {
     setAmount(parseFloat(value, 10));
   };
+
+  const goBack = () => {
+    navigation.goBack();
+  };
+
   const handleAddToken = async () => {
     try {
-      await axios.post(
-        `/api/v1/wallet/${walletId}/${selectedToken.symbol}/position`,
-        {
-          amount,
-        },
-      );
+      await axios.post(`/api/v1/wallet/${walletId}/${selectedToken.symbol}/position`, {
+        amount,
+      });
       // alert(`Successfully added ${token} to your wallet!`);
+      Alert.alert("Success", `Successfully added ${amount} tokens of ${selectedToken.symbol}!`, [
+        { text: "OK", onPress: goBack },
+      ]);
     } catch (err) {
       console.log(err.message);
     }

@@ -17,9 +17,9 @@ const Stack = createNativeStackNavigator();
 axios.defaults.baseURL = "http://18.191.86.243";
 axios.defaults.headers.common.accept = "application/json";
 
-function NavBarRender() {
-  return <NavBar />;
-}
+// no-eslintreact/function-component-definition
+// eslint-disable-next-line react/function-component-definition
+const NavBarRender = (screen) => () => <NavBar screen={screen} />;
 
 function AppNavigator() {
   const { token } = useSelector((state) => state.auth);
@@ -60,7 +60,7 @@ function AppNavigator() {
         component={WalletScreen}
         options={{
           headerShown: true,
-          headerRight: NavBarRender,
+          headerRight: NavBarRender(AppScreens.ADD_TOKEN_SCREEN),
           title: "My Wallet",
           headerTintColor: "white",
           headerStyle: {
@@ -97,6 +97,7 @@ function AppNavigator() {
         component={TokenDetailScreen}
         options={{
           headerShown: true,
+          headerRight: NavBarRender(AppScreens.ADD_POSITION_SCREEN),
           title: "Token Detail",
           headerTintColor: "white",
           headerStyle: {
