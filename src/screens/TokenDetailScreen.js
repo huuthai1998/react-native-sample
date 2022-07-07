@@ -116,14 +116,18 @@ function TokenDetailScreen() {
           },
         }),
       );
-      setTotalValue(price * selectedToken.positions.reduce(
-        (prev, cur) => prev + parseFloat(cur.amount, 10),
-        0,
-      ));
     } catch (err) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    setTotalValue(price * selectedToken.positions.reduce(
+      (prev, cur) => prev + parseFloat(cur.amount, 10),
+      0,
+    ));
+  }, [selectedToken]);
+
   function renderPosition() {
     return selectedToken.positions.map((pos) => (
       <View style={styles.card} key={pos.id}>
