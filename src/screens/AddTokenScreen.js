@@ -1,13 +1,15 @@
 import { Picker, PickerIOS } from "@react-native-picker/picker";
 import axios from "axios";
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Text, View, StyleSheet, Alert } from "react-native";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 import Modal from "react-native-modal";
 import TokenCodes from "../constant/TokenCodes";
 import Colors from "../constant/Colors";
+import AppScreens from "../constant/AppScreens";
 
 const styles = StyleSheet.create({
   container: {
@@ -69,6 +71,7 @@ function AddTokenScreen() {
   const [showPicker, setShowPicker] = useState(false);
   const [token, setToken] = useState("");
   const [symbol, setSymbol] = useState("");
+  const navitgator = useNavigation();
 
   const handleChoose = () => {
     setShowPicker(false);
@@ -81,9 +84,30 @@ function AddTokenScreen() {
         name: token,
         symbol,
       });
-      // alert(`Successfully added ${token} to your wallet!`);
+      console.log("Add token!");
+      return true;
     } catch (err) {
       console.log(err.message);
+      return false;
+    }
+  };
+
+  const onAddToken = async () => {
+    const message = await handleAddToken();
+    if (message === false) {
+      Alert.alert(
+        "Can not add!",
+        [
+          { text: "OK", style: "cancel" },
+        ],
+      );
+    } else {
+      Alert.alert(
+        "Successfully added token to your wallet",
+        [
+          { text: "OK", onPress: () => navitgator.navigate(AppScreens.WALLET_SCREEN) },
+        ],
+      );
     }
   };
 
@@ -130,7 +154,7 @@ function AddTokenScreen() {
           flexDirection: "row",
         }}
       >
-        <TouchableOpacity onPress={handleAddToken} style={styles.button}>
+        <TouchableOpacity onPress={onAddToken} style={styles.button}>
           <Text style={styles.text}>CONFIRM</Text>
         </TouchableOpacity>
       </View>

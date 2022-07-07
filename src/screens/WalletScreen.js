@@ -29,19 +29,36 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
     flex: 1,
   },
-  totalEvaluation: {
+  header: {
     marginBottom: 5,
     paddingLeft: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   totalTitle: {
     color: Colors.label,
     fontSize: 16,
     fontWeight: "600",
+    marginBottom: 5,
   },
   totalMoney: {
     color: "white",
     fontWeight: "500",
     fontSize: 25,
+  },
+  updateTitle: {
+    color: Colors.label,
+    fontSize: 13,
+    marginBottom: 5,
+    textAlign: "right",
+  },
+  updateTime: {
+    color: "white",
+    fontSize: 15,
+    textAlign: "right",
+  },
+  timeSection: {
+    padding: 10,
   },
   content: {
     flex: 1,
@@ -196,6 +213,12 @@ function WalletScreen() {
     getWalletData();
   }, [isFocused]);
 
+  const getDate = () => {
+    const currentdate = new Date();
+    const datetime = `${currentdate.getDate()}/${currentdate.getMonth() + 1}/${currentdate.getFullYear()} ${currentdate.getHours()}:${currentdate.getMinutes()}:${currentdate.getSeconds()}`;
+    return datetime;
+  };
+
   //  prettier-ignore
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -205,14 +228,20 @@ function WalletScreen() {
       >
         {!errorMessage ? (
           <>
-            <View style={styles.totalEvaluation}>
-              <Text style={styles.totalTitle}>Total Evaluation:</Text>
-              <Text style={styles.totalMoney}>
-                {totalMoney ? totalMoney.toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                }) : "$0.00"}
-              </Text>
+            <View style={styles.header}>
+              <View>
+                <Text style={styles.totalTitle}>Total Evaluation:</Text>
+                <Text style={styles.totalMoney}>
+                  {totalMoney ? totalMoney.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }) : "$0.00"}
+                </Text>
+              </View>
+              <View style={styles.timeSection}>
+                <Text style={styles.updateTitle}>Updated at:</Text>
+                <Text style={styles.updateTime}>{getDate()}</Text>
+              </View>
             </View>
             {tokens && tokens.length > 0 ? (
               <SwipeableFlatList
