@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    flex: 0.1,
     marginBottom: 5,
     paddingLeft: 10,
     flexDirection: "row",
@@ -61,6 +62,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 16,
     paddingVertical: 16,
+  },
+  listView: {
+    flex: 1,
   },
   errorTitle: {
     color: "white",
@@ -105,6 +109,10 @@ const styles = StyleSheet.create({
     // height: StyleSheet.hairlineWidth,
     backgroundColor: Colors.background,
     opacity: 0.67,
+  },
+  noData: {
+    color: Colors.subtitle,
+    padding: 10,
   },
 });
 
@@ -190,9 +198,7 @@ function WalletScreen() {
 
   const getWalletData = async () => {
     try {
-      const { data } = await axios.get("/api/v1/wallet", {
-        headers: { Accept: "application/json" },
-      });
+      const { data } = await axios.get("/api/v1/wallet");
       setTokens(data.wallet.tokens);
       dispatch(setWalletId({ walletId: data.wallet.ID }));
     } catch (error) {
@@ -205,7 +211,7 @@ function WalletScreen() {
   }, [isFocused]);
 
   const getDate = () => {
-    const datetime = moment().format("DD/MM/YYYY, hh:mm");
+    const datetime = moment().format("HH:mm:ss, MMMM Do YYYY");
     return datetime;
   };
 
@@ -220,7 +226,7 @@ function WalletScreen() {
           <>
             <View style={styles.header}>
               <View>
-                <Text style={styles.totalTitle}>Total Evaluation:</Text>
+                <Text style={styles.totalTitle}>Total Balance:</Text>
                 <Text style={styles.totalMoney}>
                   {totalMoney ? totalMoney.toLocaleString("en-US", {
                     style: "currency",
@@ -233,38 +239,40 @@ function WalletScreen() {
                 <Text style={styles.updateTime}>{getDate()}</Text>
               </View>
             </View>
-            {tokens && tokens.length > 0 ? (
-              <SwipeableFlatList
-                keyExtractor={(item) => item.id}
-                data={tokens}
-                renderItem={({ item }) => (
-                  <Pressable onPress={selectTokenHandler(item)} key={item.id}>
-                    <CardToken
-                      id={item.id}
-                      symbol={item.symbol}
-                      name={item.name}
-                      amount={item.positions.reduce(
-                        (prev, cur) => prev + parseFloat(cur.amount, 10),
-                        0,
-                      )}
-                      price={prices[item.symbol] ? prices[item.symbol] : 0}
-                      src={TokenIcons[item.symbol]}
-                    />
-                  </Pressable>
-                )}
-                maxSwipeDistance={140}
-                renderQuickActions={({ item }) => QuickActions(
-                  item,
-                  addPositionTokenHandler,
-                  onDeleteToken,
-                )}
-                contentContainerStyle={styles.contentContainerStyle}
-                // shouldBounceOnMount={true}
-                ItemSeparatorComponent={renderItemSeparator}
-              />
-            ) : (
-              <Text>There&apos;s no data available.</Text>
-            )}
+            <View style={styles.listView}>
+              {tokens && tokens.length > 0 ? (
+                <SwipeableFlatList
+                  keyExtractor={(item) => item.id}
+                  data={tokens}
+                  renderItem={({ item }) => (
+                    <Pressable onPress={selectTokenHandler(item)} key={item.id}>
+                      <CardToken
+                        id={item.id}
+                        symbol={item.symbol}
+                        name={item.name}
+                        amount={item.positions.reduce(
+                          (prev, cur) => prev + parseFloat(cur.amount, 10),
+                          0,
+                        )}
+                        price={prices[item.symbol] ? prices[item.symbol] : 0}
+                        src={TokenIcons[item.symbol]}
+                      />
+                    </Pressable>
+                  )}
+                  maxSwipeDistance={140}
+                  renderQuickActions={({ item }) => QuickActions(
+                    item,
+                    addPositionTokenHandler,
+                    onDeleteToken,
+                  )}
+                  contentContainerStyle={styles.contentContainerStyle}
+                  // shouldBounceOnMount={true}
+                  ItemSeparatorComponent={renderItemSeparator}
+                />
+              ) : (
+                <Text style={styles.noData}>There&apos;s no data available.</Text>
+              )}
+            </View>
           </>
         ) : (
           <>

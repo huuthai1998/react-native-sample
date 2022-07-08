@@ -10,6 +10,7 @@ import {
   View,
   TouchableOpacity,
   Alert,
+  Image,
 } from "react-native";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +20,7 @@ import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { setSelectedToken } from "../store/reducers/tokenReducer";
 import cryptoAxiosInstance from "../cryptoAxiosInstance";
 import Colors from "../constant/Colors";
+import TokenIcons from "../constant/TokenIcons";
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -37,9 +39,9 @@ const styles = StyleSheet.create({
   listWrapper: {
     flex: 1,
     backgroundColor: "black",
-    borderWidth: 2,
     width: "100%",
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
     borderTopStartRadius: 20,
     borderTopRightRadius: 20,
   },
@@ -77,10 +79,31 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "800",
   },
+  labelRow: {
+    flexDirection: "row",
+  },
+  label: {
+    color: Colors.label,
+    fontSize: 17,
+  },
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 50 / 2,
+    overflow: "hidden",
+    borderWidth: 0.5,
+    borderColor: "white",
+  },
+  totalEval: {
+    color: Colors.label,
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 10,
+  },
 });
 
 const dateFormatter = (date) => {
-  const formatDate = moment(date).format("DD/MM/YYYY, hh:mm");
+  const formatDate = moment(date).format("DD/MM/YYYY, HH:mm:ss");
   return formatDate;
 };
 
@@ -172,11 +195,24 @@ function TokenDetailScreen() {
       <View behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.content}>
         <View style={styles.detailWrapper}>
           <View>
-            <Text style={styles.text}>{`Symbol: ${selectedToken.symbol}`}</Text>
-            <Text style={styles.text}>{`Name: ${selectedToken.name}`}</Text>
-            <Text style={styles.text}>{`Description: ${selectedToken.description}`}</Text>
+            <View style={{ paddingBottom: 10, paddingHorizontal: 20 }}>
+              <Image
+                source={TokenIcons[selectedToken.symbol]}
+                style={styles.image}
+                title={selectedToken.symbol}
+              />
+            </View>
+            <View style={styles.labelRow}>
+              <Text style={styles.label}>Name: </Text>
+              <Text style={styles.text}>{selectedToken.name}</Text>
+            </View>
+            <View style={styles.labelRow}>
+              <Text style={styles.label}>Description: </Text>
+              <Text style={styles.text}>{selectedToken.description}</Text>
+            </View>
           </View>
           <View>
+            <Text style={styles.totalEval}>Total Evaluation:</Text>
             <Text style={styles.evaluation}>
               {`${totalValue.toLocaleString("en-US", {
                 style: "currency",

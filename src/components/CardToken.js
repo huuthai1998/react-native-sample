@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, Image, View } from "react-native";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faCoins, faExchange } from "@fortawesome/free-solid-svg-icons";
 import Colors from "../constant/Colors";
 
 const styles = StyleSheet.create({
@@ -13,19 +15,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     margin: 5,
     padding: 10,
+    paddingBottom: 5,
   },
   main: {
     flexDirection: "row",
   },
-  amountText: {
-    fontSize: 15,
-    color: "white",
-    textAlign: "right",
-    marginBottom: 10,
-  },
   amount: {
+    color: "#FFDD00",
+    marginRight: 10,
     textAlign: "right",
+  },
+  exchangeRate: {
     color: "#8AC135",
+    marginRight: 10,
+    textAlign: "right",
   },
   content: {
     flexDirection: "column",
@@ -33,7 +36,7 @@ const styles = StyleSheet.create({
   },
   contentLine: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
   },
   title: {
     color: "white",
@@ -64,21 +67,21 @@ function CardToken({ id, symbol, name, amount, src = "", price = 0 }) {
           <Text style={styles.name}>{name}</Text>
         </View>
       </View>
-      <View style={styles.content}>
+      <View>
         <View style={styles.contentLine}>
-          <Text style={styles.amountText}>Amount</Text>
-          <Text style={styles.amount}>{amount % 1 === 0 ? amount : amount.toFixed(2)}</Text>
-        </View>
-        <View style={styles.contentLine}>
-          <Text style={styles.amountText}>Exchange rate</Text>
-          <Text style={styles.amount}>
+          <Text style={styles.exchangeRate}>
             {price.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
             })}
           </Text>
+          <FontAwesomeIcon icon={faExchange} color={Colors.label} size={13} />
         </View>
-        <View style={styles.contentLine}>
+        <View style={[styles.contentLine, { paddingTop: 10 }]}>
+          <Text style={styles.amount}>{amount % 1 === 0 ? amount : amount.toFixed(2)}</Text>
+          <FontAwesomeIcon icon={faCoins} color={Colors.label} size={13} />
+        </View>
+        {/* <View style={styles.contentLine}>
           <Text style={styles.amountText}>Evaluation</Text>
           <Text style={styles.amount}>
             {(price * amount).toLocaleString("en-US", {
@@ -86,7 +89,7 @@ function CardToken({ id, symbol, name, amount, src = "", price = 0 }) {
               currency: "USD",
             })}
           </Text>
-        </View>
+        </View> */}
       </View>
     </View>
   );

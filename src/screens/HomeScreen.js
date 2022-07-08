@@ -1,12 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch } from "react-redux";
 
 import AppScreens from "../constant/AppScreens";
 import Colors from "../constant/Colors";
 import { logOut } from "../store/reducers/authReducer";
+import Images from "../assets/index";
 
 const styles = StyleSheet.create({
   container: {
@@ -38,6 +39,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 15,
   },
+  image: {
+    width: 300,
+    height: 300,
+    borderRadius: 100 / 2,
+    overflow: "hidden",
+  },
 });
 
 function HomeScreen() {
@@ -59,6 +66,9 @@ function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View styles={{ marginVertical: 50 }}>
+        <Image source={Images.home} style={styles.image} />
+      </View>
       <TouchableOpacity
         onPress={navigateToWallet}
         color="#841584"
