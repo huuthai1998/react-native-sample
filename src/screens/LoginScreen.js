@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  // Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -12,24 +11,24 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useDispatch } from "react-redux";
-import AppScreens from "../constant/constant";
-import { signIn } from "../store/reducers/authReducer";
+import { useDispatch, useSelector } from "react-redux";
+import AppScreens from "../constant/AppScreens";
+import Colors from "../constant/Colors";
+import { clearLoginErrorMessage, signIn } from "../store/reducers/authReducer";
 
 const styles = StyleSheet.create({
   safeAreaView: {
-    backgroundColor: "#000000",
+    backgroundColor: Colors.background,
     flex: 1,
   },
   title: {
-    color: "#FFFFFF",
+    color: "white",
     fontSize: 28,
     fontWeight: "700",
-    lineHeight: 34,
     marginBottom: 10,
   },
   subtitle: {
-    color: "rgba(235, 235, 245, 0.6)",
+    color: Colors.subtitle,
     fontSize: 17,
     fontWeight: "400",
     lineHeight: 22,
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    backgroundColor: "rgb(93, 95, 222)",
+    backgroundColor: Colors.button,
     borderRadius: 8,
     height: 48,
     justifyContent: "center",
@@ -54,12 +53,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     lineHeight: 22,
   },
-  forgotPasswordContainer: {
-    alignItems: "flex-end",
-  },
   form: {
     alignItems: "center",
-    backgroundColor: "rgb(58, 58, 60)",
+    backgroundColor: Colors.input,
     borderRadius: 8,
     flexDirection: "row",
     height: 48,
@@ -67,43 +63,50 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    color: "rgba(235, 235, 245, 0.6)",
+    color: Colors.label,
     fontSize: 15,
     fontWeight: "400",
     lineHeight: 20,
     width: 80,
   },
-  textButton: {
-    color: "#FFFFFF",
-    fontSize: 15,
-    fontWeight: "400",
-    lineHeight: 20,
-  },
   textInput: {
-    color: "#FFFFFF",
+    color: "white",
     flex: 1,
+  },
+  error: {
+    color: Colors.error,
+    fontWeight: "300",
+    marginBottom: 10,
   },
 });
 
 function LoginScreen() {
   const navigation = useNavigation();
+  const { isAuth, loginErrorMessage } = useSelector((state) => state.auth);
+  const [userInfo, setUserInfo] = useState({ username: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const [username, setusername] = useState("");
-  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const onChangeHandler = (key) => (value) => {
-    if (key === "username") setusername(value);
-    if (key === "password") setPassword(value);
+    setUserInfo({ ...userInfo, [key]: value });
   };
 
-  const handleLogin = () => {
-    try {
-      dispatch(signIn({ username, password }));
-      navigation.navigate(AppScreens.HOME_SCREEN);
-    } catch (err) {
-      console.log(err);
-    }
+  const handleLogin = async () => {
+    // this call may change loginErrorMessage state
+    dispatch(signIn(userInfo));
   };
+
+  useEffect(() => {
+    setErrorMessage(loginErrorMessage);
+  }, [loginErrorMessage]);
+
+  useEffect(() => {
+    dispatch(clearLoginErrorMessage());
+  }, []);
+
+  useEffect(() => {
+    if (isAuth) navigation.navigate(AppScreens.HOME_SCREEN);
+  }, [isAuth]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -147,6 +150,10 @@ function LoginScreen() {
             />
           </View>
         </Pressable>
+
+        {errorMessage && errorMessage.length > 0 ? (
+          <Text style={styles.error}>{errorMessage}</Text>
+        ) : null}
 
         <TouchableOpacity onPress={handleLogin}>
           <View style={styles.button}>

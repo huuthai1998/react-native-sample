@@ -1,3 +1,4 @@
+// prettier-ignore
 module.exports = {
   root: true,
   extends: "eslint-config-airbnb",
